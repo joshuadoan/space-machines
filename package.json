@@ -1,7 +1,7 @@
 {
   "name": "space-machines",
   "version": "1.0.0",
-  "description": "Excalibur TypeScript template for Vite",
+  "description": "Machines in space",
   "main": "index.js",
   "scripts": {
     "dev": "vite",

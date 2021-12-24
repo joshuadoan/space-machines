@@ -1,7 +1,6 @@
 import { Actor, CollisionType, Color, PostUpdateEvent, vec } from "excalibur";
-import { bounceOffEdges, createMachine } from "../utils";
+import { bounceOffEdges, createMachine, Machine } from "../utils";
 
-// Create a ball at pos (100, 300) to start
 export const ShipColors = [
   Color.DarkGray,
   Color.LightGray,
@@ -9,7 +8,20 @@ export const ShipColors = [
   Color.Magenta
 ];
 
-class Trader extends Actor {
+export const radius = 4;
+export const ShipNames = ["Trader", "Pirate"];
+
+export enum States {
+  Off,
+  On
+}
+
+export enum Transitions {
+  TurnOffEngine,
+  TurnOnEngine
+}
+
+class Ship extends Actor {
   public state: any;
 }
 
@@ -20,13 +32,6 @@ function flyInRandomDirection(actor: Actor) {
   );
 }
 
-const flyToRandomPoint = (actor: Actor) => {
-  setTimeout(() => {
-    flyInRandomDirection(actor);
-    actor.graphics.opacity = 1;
-  }, Math.floor(Math.random() * 5000));
-};
-
 const stop = (actor: Actor) => {
   actor.vel = vec(0, 0);
 };
@@ -35,39 +40,42 @@ const dimLights = (actor: Actor) => {
   actor.graphics.opacity = 0.2;
 };
 
+const turnOnLights = (actor: Actor) => {
+  actor.graphics.opacity = 1;
+};
+
 export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
-  const trader = new Trader({
+  const ship = new Ship({
     x,
     y,
-    radius: 2,
-    name: ["Trader", "Pirate"][
-      Math.floor(Math.random() * ["Trader", "Pirate"].length)
-    ],
+    radius,
+    name: ShipNames[Math.floor(Math.random() * ShipNames.length)],
     color: ShipColors[Math.floor(Math.random() * ShipColors.length)]
   });
 
-  trader.graphics.opacity = 0.2;
-
-  trader.state = createMachine({
-    initialState: "off",
+  const state: Machine<States> = createMachine<States>({
+    initialState: States.Off,
     states: {
-      off: {
-        links: {
-          TURN_ON: {
-            target: "on",
+      [States.Off]: {
+        transitions: {
+          [Transitions.TurnOnEngine]: {
+            destinationState: States.On,
             effect() {
-              flyToRandomPoint(trader);
+              turnOnLights(ship);
+              setTimeout(() => {
+                flyInRandomDirection(ship);
+              }, Math.floor(Math.random() * 5000));
             }
           }
         }
       },
-      on: {
-        links: {
-          TURN_OFF: {
-            target: "off",
+      [States.On]: {
+        transitions: {
+          [Transitions.TurnOffEngine]: {
+            destinationState: States.Off,
             effect() {
-              stop(trader);
-              dimLights(trader);
+              stop(ship);
+              dimLights(ship);
             }
           }
         }
@@ -75,16 +83,28 @@ export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
     }
   });
 
-  trader.body.collisionType = CollisionType.Passive;
+  ship.state = state;
+  ship.graphics.opacity = 0.2;
+  ship.body.collisionType = CollisionType.Passive;
 
-  trader.on("collisionstart", () => {
-    trader.state.transition("on", "TURN_OFF");
+  /**
+   * Collision Events
+   */
+  ship.on("collisionstart", () => {
+    ship.state.transition(States.On, Transitions.TurnOffEngine);
+
+    setTimeout(() => {
+      ship.state.transition(States.Off, Transitions.TurnOnEngine);
+    }, Math.floor(Math.random() * 10000));
   });
 
-  trader.on("postupdate", (e: PostUpdateEvent) => {
+  /**
+   * Position events
+   */
+  ship.on("postupdate", (e: PostUpdateEvent) => {
     // console.log(`current state: ${trader.state?.value}`);
-    bounceOffEdges(trader, e.engine);
+    bounceOffEdges(ship, e.engine);
   });
 
-  return trader;
+  return ship;
 };
