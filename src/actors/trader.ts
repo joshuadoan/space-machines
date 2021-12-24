@@ -20,6 +20,21 @@ function flyInRandomDirection(actor: Actor) {
   );
 }
 
+const flyToRandomPoint = (actor: Actor) => {
+  setTimeout(() => {
+    flyInRandomDirection(actor);
+    actor.graphics.opacity = 1;
+  }, Math.floor(Math.random() * 5000));
+};
+
+const stop = (actor: Actor) => {
+  actor.vel = vec(0, 0);
+};
+
+const dimLights = (actor: Actor) => {
+  actor.graphics.opacity = 0.2;
+};
+
 export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
   const trader = new Trader({
     x,
@@ -41,10 +56,7 @@ export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
           TURN_ON: {
             target: "on",
             effect() {
-              setTimeout(() => {
-                flyInRandomDirection(trader);
-                trader.graphics.opacity = 1;
-              }, Math.floor(Math.random() * 5000));
+              flyToRandomPoint(trader);
             }
           }
         }
@@ -54,8 +66,8 @@ export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
           TURN_OFF: {
             target: "off",
             effect() {
-              trader.graphics.opacity = 0.2;
-              trader.vel = vec(0, 0);
+              stop(trader);
+              dimLights(trader);
             }
           }
         }
@@ -64,6 +76,7 @@ export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
   });
 
   trader.body.collisionType = CollisionType.Passive;
+
   trader.on("collisionstart", () => {
     trader.state.transition("on", "TURN_OFF");
   });
