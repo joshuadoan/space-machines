@@ -1,5 +1,11 @@
-import { Actor, CollisionType, Color, PostUpdateEvent, vec } from "excalibur";
+import { Actor, CollisionType, Color, PostUpdateEvent } from "excalibur";
 import { bounceOffEdges, createMachine, Machine } from "../utils";
+import {
+  dimLights,
+  flyInRandomDirection,
+  turnOnLights,
+  stop
+} from "./shipUtils";
 
 export const ShipColors = [
   Color.DarkGray,
@@ -22,29 +28,9 @@ export enum Transitions {
   TurnOnEngine,
   FlyToRandomPoint
 }
-
 class Ship extends Actor {
   public state: any;
 }
-
-function flyInRandomDirection(actor: Actor) {
-  actor.vel = vec(
-    Math.floor(Math.random() * 200 - 100),
-    Math.floor(Math.random() * 200 - 100)
-  );
-}
-
-const stop = (actor: Actor) => {
-  actor.vel = vec(0, 0);
-};
-
-const dimLights = (actor: Actor) => {
-  actor.graphics.opacity = 0.2;
-};
-
-const turnOnLights = (actor: Actor) => {
-  actor.graphics.opacity = 1;
-};
 
 export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   const ship = new Ship({

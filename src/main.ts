@@ -1,5 +1,5 @@
 import { Engine, DisplayMode, Color } from "excalibur";
-import { CreateShip, States, Transitions } from "./actors/trader";
+import { CreateShip, States, Transitions } from "./actors/ship";
 
 const NUMBER_OF_SHIPS = 100;
 
