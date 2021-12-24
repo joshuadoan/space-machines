@@ -1,4 +1,10 @@
-import { Actor, CollisionType, Color, PostUpdateEvent } from "excalibur";
+import {
+  Actor,
+  CollisionStartEvent,
+  CollisionType,
+  Color,
+  PostUpdateEvent
+} from "excalibur";
 import { bounceOffEdges, createMachine, Machine } from "../utils";
 import {
   dimLights,
@@ -85,19 +91,21 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   /**
    * Collision Events
    */
-  ship.on("collisionstart", () => {
-    ship.state.transition(States.Flying, Transitions.TurnOffEngine);
+  ship.on("collisionstart", (e: CollisionStartEvent) => {
+    const ship = e.target as Ship;
+    ship.state.transition(ship.state.value, Transitions.TurnOffEngine);
 
     setTimeout(() => {
-      ship.state.transition(States.Off, Transitions.TurnOnEngine);
-      ship.state.transition(States.Idle, Transitions.FlyToRandomPoint);
+      ship.state.transition(ship.state.value, Transitions.TurnOnEngine);
+      ship.state.transition(ship.state.value, Transitions.FlyToRandomPoint);
     }, Math.floor(Math.random() * 10000));
   });
 
   /**
-   * Position events
+   * Post update events
    */
   ship.on("postupdate", (e: PostUpdateEvent) => {
+    const ship = e.target as Ship;
     bounceOffEdges(ship, e.engine);
   });
 

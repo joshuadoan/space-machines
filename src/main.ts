@@ -18,8 +18,8 @@ const setup = (game: Engine) => {
     game.add(ship);
 
     setTimeout(() => {
-      ship.state.transition(States.Off, Transitions.TurnOnEngine);
-      ship.state.transition(States.Idle, Transitions.FlyToRandomPoint);
+      ship.state.transition(ship.state.value, Transitions.TurnOnEngine);
+      ship.state.transition(ship.state.value, Transitions.FlyToRandomPoint);
     }, Math.floor(Math.random() * 5000));
   });
 };
