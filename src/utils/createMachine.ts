@@ -1,7 +1,7 @@
 type Transition<T extends string | number> = {
   [key: string]: {
     destinationState: T;
-    effect: () => void;
+    effect?: () => void;
   };
 };
 
@@ -15,11 +15,11 @@ export type StateMachineDefinition<T extends string | number> = {
 };
 
 export type Machine<StatesEnum> = {
-  value: string;
+  value: StatesEnum;
   transition(
     currentState: StatesEnum,
     transition: string
-  ): string | StatesEnum | undefined;
+  ): StatesEnum | undefined;
 };
 
 export function createMachine<StatesEnum extends string | number>(
@@ -49,7 +49,7 @@ export function createMachine<StatesEnum extends string | number>(
       /**
        * Run the effect for the transition
        */
-      destination.effect();
+      destination.effect && destination.effect();
 
       /**
        * Transition to the destination state

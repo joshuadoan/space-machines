@@ -13,12 +13,14 @@ export const ShipNames = ["Trader", "Pirate"];
 
 export enum States {
   Off,
-  On
+  Idle,
+  Flying
 }
 
 export enum Transitions {
   TurnOffEngine,
-  TurnOnEngine
+  TurnOnEngine,
+  FlyToRandomPoint
 }
 
 class Ship extends Actor {
@@ -44,7 +46,7 @@ const turnOnLights = (actor: Actor) => {
   actor.graphics.opacity = 1;
 };
 
-export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
+export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   const ship = new Ship({
     x,
     y,
@@ -59,17 +61,24 @@ export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
       [States.Off]: {
         transitions: {
           [Transitions.TurnOnEngine]: {
-            destinationState: States.On,
+            destinationState: States.Idle,
             effect() {
               turnOnLights(ship);
-              setTimeout(() => {
-                flyInRandomDirection(ship);
-              }, Math.floor(Math.random() * 5000));
             }
           }
         }
       },
-      [States.On]: {
+      [States.Idle]: {
+        transitions: {
+          [Transitions.FlyToRandomPoint]: {
+            destinationState: States.Flying,
+            effect() {
+              flyInRandomDirection(ship);
+            }
+          }
+        }
+      },
+      [States.Flying]: {
         transitions: {
           [Transitions.TurnOffEngine]: {
             destinationState: States.Off,
@@ -91,10 +100,11 @@ export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
    * Collision Events
    */
   ship.on("collisionstart", () => {
-    ship.state.transition(States.On, Transitions.TurnOffEngine);
+    ship.state.transition(States.Flying, Transitions.TurnOffEngine);
 
     setTimeout(() => {
       ship.state.transition(States.Off, Transitions.TurnOnEngine);
+      ship.state.transition(States.Idle, Transitions.FlyToRandomPoint);
     }, Math.floor(Math.random() * 10000));
   });
 
@@ -102,7 +112,6 @@ export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
    * Position events
    */
   ship.on("postupdate", (e: PostUpdateEvent) => {
-    // console.log(`current state: ${trader.state?.value}`);
     bounceOffEdges(ship, e.engine);
   });
 
