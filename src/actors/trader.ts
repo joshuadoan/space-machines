@@ -1,16 +1,5 @@
-import {
-  Actor,
-  CollisionStartEvent,
-  CollisionType,
-  Color,
-  PostUpdateEvent,
-  vec
-} from "excalibur";
-import {
-  bounceOffEdges,
-  createMachine,
-  StateMachineDefinition
-} from "../utils";
+import { Actor, CollisionType, Color, PostUpdateEvent, vec } from "excalibur";
+import { bounceOffEdges, createMachine } from "../utils";
 
 // Create a ball at pos (100, 300) to start
 export const ShipColors = [
@@ -75,7 +64,7 @@ export const MakeTrader = ({ x, y }: { x: number; y: number }) => {
   });
 
   trader.body.collisionType = CollisionType.Passive;
-  trader.on("collisionstart", ({ other }: CollisionStartEvent) => {
+  trader.on("collisionstart", () => {
     trader.state.transition("on", "TURN_OFF");
   });
 
