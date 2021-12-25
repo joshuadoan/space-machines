@@ -3,13 +3,13 @@ import {
   DisplayMode,
   Color,
   PreUpdateEvent,
-  CollisionStartEvent,
-  PostUpdateEvent
+  CollisionStartEvent
 } from "excalibur";
 import { CreateShip, Ship, States, Transitions } from "./actors/ship";
-import { bounceOffEdges } from "./utils";
+import { State } from "./utils";
 
 const NUMBER_OF_SHIPS = 100;
+const ONE_SECOND = 1000;
 
 const game = new Engine({
   displayMode: DisplayMode.FillScreen,
@@ -28,14 +28,33 @@ const setup = (game: Engine) => {
      */
     ship.on("preupdate", (e: PreUpdateEvent) => {
       const ship = e.target as Ship;
+      const state = ship.stateMachine.value as State;
+      const now = new Date().getTime();
+      const actionStartedTime = state.at ? state.at.getTime() : now;
+      const timeDiff = now - actionStartedTime;
 
-      switch (ship.state.value as States) {
-        case States.Off: {
-          ship.state.transition(States.Off, Transitions.TurnOnEngine);
+      switch (state.type) {
+        case "Off": {
+          if (timeDiff > 1 * ONE_SECOND || !state.at) {
+            ship.stateMachine.transition(
+              {
+                type: States.Off
+              },
+              Transitions.TurnOnEngine
+            );
+          }
           break;
         }
-        case States.Idle: {
-          ship.state.transition(States.Idle, Transitions.FlyToRandomPoint);
+        case "Idle": {
+          if (timeDiff > 1 * ONE_SECOND || !state.at) {
+            ship.stateMachine.transition(
+              {
+                type: States.Idle
+              },
+              Transitions.FlyToRandomPoint
+            );
+          }
+
           break;
         }
       }
@@ -46,15 +65,12 @@ const setup = (game: Engine) => {
      */
     ship.on("collisionstart", (e: CollisionStartEvent) => {
       const ship = e.target as Ship;
-      ship.state.transition(States.Flying, Transitions.TurnOffEngine);
-    });
-
-    /**
-     * Post update events
-     */
-    ship.on("postupdate", (e: PostUpdateEvent) => {
-      const ship = e.target as Ship;
-      bounceOffEdges(ship, e.engine);
+      ship.stateMachine.transition(
+        {
+          type: States.Flying
+        },
+        Transitions.TurnOffEngine
+      );
     });
 
     game.add(ship);

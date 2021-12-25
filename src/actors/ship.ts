@@ -1,11 +1,4 @@
-import {
-  Actor,
-  CollisionStartEvent,
-  CollisionType,
-  Color,
-  PostUpdateEvent,
-  PreUpdateEvent
-} from "excalibur";
+import { Actor, CollisionType, Color, PostUpdateEvent } from "excalibur";
 import { bounceOffEdges, createMachine, Machine } from "../utils";
 import {
   dimLights,
@@ -21,22 +14,21 @@ export const ShipColors = [
   Color.Magenta
 ];
 
-export const radius = 1;
+export const radius = 4;
 export const ShipNames = ["Trader", "Pirate"];
 
 export enum States {
   Off = "Off",
   Idle = "Idle",
-  Flying = "FLying"
+  Flying = "Flying"
 }
-
 export enum Transitions {
   TurnOffEngine = "Turn off engine",
   TurnOnEngine = "Turn on engine",
   FlyToRandomPoint = "Fly to random point"
 }
 export class Ship extends Actor {
-  public state: any;
+  public stateMachine: any;
 }
 
 export const CreateShip = ({ x, y }: { x: number; y: number }) => {
@@ -48,17 +40,20 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
     color: ShipColors[Math.floor(Math.random() * ShipColors.length)]
   });
 
-  const state: Machine<States> = createMachine<States>({
-    initialState: States.Off,
+  const state: Machine = createMachine({
+    initialState: {
+      type: States.Off
+    },
     states: {
       [States.Off]: {
         transitions: {
           [Transitions.TurnOnEngine]: {
-            destinationState: States.Idle,
+            target: {
+              type: States.Idle,
+              at: new Date()
+            },
             effect() {
-              setTimeout(() => {
-                turnOnLights(ship);
-              }, Math.floor(Math.random() * 10000));
+              turnOnLights(ship);
             }
           }
         }
@@ -66,11 +61,11 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
       [States.Idle]: {
         transitions: {
           [Transitions.FlyToRandomPoint]: {
-            destinationState: States.Flying,
+            target: {
+              type: States.Flying
+            },
             effect() {
-              setTimeout(() => {
-                flyInRandomDirection(ship);
-              }, Math.floor(Math.random() * 10000));
+              flyInRandomDirection(ship);
             }
           }
         }
@@ -78,7 +73,9 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
       [States.Flying]: {
         transitions: {
           [Transitions.TurnOffEngine]: {
-            destinationState: States.Off,
+            target: {
+              type: States.Off
+            },
             effect() {
               stop(ship);
               dimLights(ship);
@@ -89,9 +86,16 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
     }
   });
 
-  ship.state = state;
-  ship.graphics.opacity = 0.2;
+  ship.stateMachine = state;
   ship.body.collisionType = CollisionType.Passive;
+
+  /**
+   * Post update events
+   */
+  ship.on("postupdate", (e: PostUpdateEvent) => {
+    const ship = e.target as Ship;
+    bounceOffEdges(ship, e.engine);
+  });
 
   return ship;
 };
