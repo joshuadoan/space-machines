@@ -41,7 +41,7 @@ export function createMachine<StatesEnum extends string | number>(
       const destination = currentStateDefinition.transitions[transition];
       if (!destination) {
         console.warn(
-          `You can not 🚙${transition}🚙 from the ✨${currentState}✨ state`
+          `You can not 🚙 ${transition} 🚙 from the ✨ ${currentState} ✨ state`
         );
         return;
       }

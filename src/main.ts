@@ -16,11 +16,6 @@ const setup = (game: Engine) => {
     });
 
     game.add(ship);
-
-    setTimeout(() => {
-      ship.state.transition(ship.state.value, Transitions.TurnOnEngine);
-      ship.state.transition(ship.state.value, Transitions.FlyToRandomPoint);
-    }, Math.floor(Math.random() * 5000));
   });
 };
 

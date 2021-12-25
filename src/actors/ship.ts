@@ -3,7 +3,8 @@ import {
   CollisionStartEvent,
   CollisionType,
   Color,
-  PostUpdateEvent
+  PostUpdateEvent,
+  PreUpdateEvent
 } from "excalibur";
 import { bounceOffEdges, createMachine, Machine } from "../utils";
 import {
@@ -24,15 +25,15 @@ export const radius = 4;
 export const ShipNames = ["Trader", "Pirate"];
 
 export enum States {
-  Off,
-  Idle,
-  Flying
+  Off = "Off",
+  Idle = "Idle",
+  Flying = "FLying"
 }
 
 export enum Transitions {
-  TurnOffEngine,
-  TurnOnEngine,
-  FlyToRandomPoint
+  TurnOffEngine = "Turn off engine",
+  TurnOnEngine = "Turn on engine",
+  FlyToRandomPoint = "Fly to random point"
 }
 class Ship extends Actor {
   public state: any;
@@ -55,7 +56,9 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
           [Transitions.TurnOnEngine]: {
             destinationState: States.Idle,
             effect() {
-              turnOnLights(ship);
+              setTimeout(() => {
+                turnOnLights(ship);
+              }, Math.floor(Math.random() * 10000));
             }
           }
         }
@@ -65,7 +68,9 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
           [Transitions.FlyToRandomPoint]: {
             destinationState: States.Flying,
             effect() {
-              flyInRandomDirection(ship);
+              setTimeout(() => {
+                flyInRandomDirection(ship);
+              }, Math.floor(Math.random() * 10000));
             }
           }
         }
@@ -93,12 +98,22 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
    */
   ship.on("collisionstart", (e: CollisionStartEvent) => {
     const ship = e.target as Ship;
-    ship.state.transition(ship.state.value, Transitions.TurnOffEngine);
+    ship.state.transition(States.Flying, Transitions.TurnOffEngine);
+  });
 
-    setTimeout(() => {
-      ship.state.transition(ship.state.value, Transitions.TurnOnEngine);
-      ship.state.transition(ship.state.value, Transitions.FlyToRandomPoint);
-    }, Math.floor(Math.random() * 10000));
+  ship.on("preupdate", (e: PreUpdateEvent) => {
+    const ship = e.target as Ship;
+
+    switch (ship.state.value as States) {
+      case States.Off: {
+        ship.state.transition(States.Off, Transitions.TurnOnEngine);
+        break;
+      }
+      case States.Idle: {
+        ship.state.transition(States.Idle, Transitions.FlyToRandomPoint);
+        break;
+      }
+    }
   });
 
   /**
