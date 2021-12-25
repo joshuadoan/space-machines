@@ -21,7 +21,7 @@ export const ShipColors = [
   Color.Magenta
 ];
 
-export const radius = 4;
+export const radius = 1;
 export const ShipNames = ["Trader", "Pirate"];
 
 export enum States {
@@ -35,7 +35,7 @@ export enum Transitions {
   TurnOnEngine = "Turn on engine",
   FlyToRandomPoint = "Fly to random point"
 }
-class Ship extends Actor {
+export class Ship extends Actor {
   public state: any;
 }
 
@@ -92,37 +92,6 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   ship.state = state;
   ship.graphics.opacity = 0.2;
   ship.body.collisionType = CollisionType.Passive;
-
-  /**
-   * Collision Events
-   */
-  ship.on("collisionstart", (e: CollisionStartEvent) => {
-    const ship = e.target as Ship;
-    ship.state.transition(States.Flying, Transitions.TurnOffEngine);
-  });
-
-  ship.on("preupdate", (e: PreUpdateEvent) => {
-    const ship = e.target as Ship;
-
-    switch (ship.state.value as States) {
-      case States.Off: {
-        ship.state.transition(States.Off, Transitions.TurnOnEngine);
-        break;
-      }
-      case States.Idle: {
-        ship.state.transition(States.Idle, Transitions.FlyToRandomPoint);
-        break;
-      }
-    }
-  });
-
-  /**
-   * Post update events
-   */
-  ship.on("postupdate", (e: PostUpdateEvent) => {
-    const ship = e.target as Ship;
-    bounceOffEdges(ship, e.engine);
-  });
 
   return ship;
 };
