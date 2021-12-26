@@ -7,5 +7,5 @@ export const ShipColors = [
   Color.Magenta
 ];
 
-export const radius = 2;
+export const radius = 3;
 export const ShipNames = ["Trader", "Pirate"];

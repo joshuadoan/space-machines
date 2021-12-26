@@ -30,13 +30,13 @@ export const itsBeenAFewSeconds = (timeStarted: Date) => {
 export const bounceOffEdges = (actor: Actor, game: Engine) => {
   // If the ball collides with the left side
   // of the screen reverse the x velocity
-  if (actor.pos.x - 20 < actor.width / 2) {
+  if (actor.pos.x + 20 < actor.width / 2) {
     actor.vel.x *= -1;
   }
 
   // If the ball collides with the right side
   // of the screen reverse the x velocity
-  if (actor.pos.x > game.drawWidth + 20) {
+  if (actor.pos.x - 20 > game.drawWidth + 20) {
     actor.vel.x *= -1;
   }
 
