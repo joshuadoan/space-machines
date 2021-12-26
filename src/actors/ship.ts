@@ -23,7 +23,7 @@ export type FlyToRandomPoint = "Fly to random point";
 export type ShipTransitions = TurnOffEngine | TurnOnEngine | FlyToRandomPoint;
 
 export class Ship extends Actor {
-  public stateMachine: any;
+  public state: any;
 }
 
 export const CreateShip = ({ x, y }: { x: number; y: number }) => {
@@ -39,25 +39,22 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   ship.graphics.opacity = 0.2;
 
   const state: Machine<ShipStates, ShipTransitions> = buildShipState(ship);
-  ship.stateMachine = state;
+  ship.state = state;
 
   const handleUpdate = (e: PreUpdateEvent) => {
     const ship = e.target as Ship;
-    const stateMachine = ship.stateMachine as Machine<
-      ShipStates,
-      ShipTransitions
-    >;
+    const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
 
     switch (stateMachine.value.type) {
       case "Off": {
-        if (itsBeenAFewSeconds(state.value.at)) {
-          stateMachine.transition(state.value, "Turn on engine");
+        if (itsBeenAFewSeconds(stateMachine.value.at)) {
+          stateMachine.transition(stateMachine.value, "Turn on engine");
         }
         break;
       }
       case "Idle": {
-        if (itsBeenAFewSeconds(state.value.at)) {
-          stateMachine.transition(state.value, "Fly to random point");
+        if (itsBeenAFewSeconds(stateMachine.value.at)) {
+          stateMachine.transition(stateMachine.value, "Fly to random point");
         }
         break;
       }
@@ -66,10 +63,7 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
 
   const handleCollision = (e: CollisionStartEvent) => {
     const ship = e.target as Ship;
-    const stateMachine = ship.stateMachine as Machine<
-      ShipStates,
-      ShipTransitions
-    >;
+    const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
 
     if (stateMachine.value.type === "Flying") {
       stateMachine.transition(stateMachine.value, "Turn off engine");
@@ -77,9 +71,7 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   };
 
   ship.on("preupdate", handleUpdate);
-
   ship.on("collisionstart", handleCollision);
-
   ship.on("postupdate", (e: PostUpdateEvent) => {
     const ship = e.target as Ship;
     bounceOffEdges(ship, e.engine);
