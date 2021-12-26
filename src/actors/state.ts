@@ -1,5 +1,5 @@
 import { createMachine } from "../utils";
-import { Ship, ShipStates, ShipTransitions, Transitions } from "./ship";
+import { Ship, ShipStates, ShipTransitions } from "./ship";
 import {
   dimLights,
   flyInRandomDirection,
