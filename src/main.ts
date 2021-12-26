@@ -23,36 +23,24 @@ const setup = (game: Engine) => {
       y: Math.floor(Math.random() * game.drawHeight)
     });
 
-    /**
-     * Pre update events
-     */
     ship.on("preupdate", (e: PreUpdateEvent) => {
       const ship = e.target as Ship;
-      const state = ship.stateMachine.value as State;
+      const state = ship.state.value as State;
+
       const now = new Date().getTime();
-      const actionStartedTime = state.at ? state.at.getTime() : now;
-      const timeDiff = now - actionStartedTime;
+      const timeStarted = state.at ? state.at.getTime() : now;
+      const timeDiff = now - timeStarted;
 
       switch (state.type) {
         case "Off": {
           if (timeDiff > 1 * ONE_SECOND || !state.at) {
-            ship.stateMachine.transition(
-              {
-                type: States.Off
-              },
-              Transitions.TurnOnEngine
-            );
+            ship.state.transition(state, Transitions.TurnOnEngine);
           }
           break;
         }
         case "Idle": {
           if (timeDiff > 1 * ONE_SECOND || !state.at) {
-            ship.stateMachine.transition(
-              {
-                type: States.Idle
-              },
-              Transitions.FlyToRandomPoint
-            );
+            ship.state.transition(state, Transitions.FlyToRandomPoint);
           }
 
           break;
@@ -60,17 +48,13 @@ const setup = (game: Engine) => {
       }
     });
 
-    /**
-     * Collision Events
-     */
     ship.on("collisionstart", (e: CollisionStartEvent) => {
       const ship = e.target as Ship;
-      ship.stateMachine.transition(
-        {
-          type: States.Flying
-        },
-        Transitions.TurnOffEngine
-      );
+      const state = ship.state.value as State;
+
+      if (state.type === States.Flying) {
+        ship.state.transition(state, Transitions.TurnOffEngine);
+      }
     });
 
     game.add(ship);

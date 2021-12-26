@@ -22,13 +22,14 @@ export enum States {
   Idle = "Idle",
   Flying = "Flying"
 }
+
 export enum Transitions {
   TurnOffEngine = "Turn off engine",
   TurnOnEngine = "Turn on engine",
   FlyToRandomPoint = "Fly to random point"
 }
 export class Ship extends Actor {
-  public stateMachine: any;
+  public state: any;
 }
 
 export const CreateShip = ({ x, y }: { x: number; y: number }) => {
@@ -39,6 +40,8 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
     name: ShipNames[Math.floor(Math.random() * ShipNames.length)],
     color: ShipColors[Math.floor(Math.random() * ShipColors.length)]
   });
+
+  ship.body.collisionType = CollisionType.Passive;
 
   const state: Machine = createMachine({
     initialState: {
@@ -86,8 +89,7 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
     }
   });
 
-  ship.stateMachine = state;
-  ship.body.collisionType = CollisionType.Passive;
+  ship.state = state;
 
   /**
    * Post update events
