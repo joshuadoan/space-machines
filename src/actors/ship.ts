@@ -7,7 +7,7 @@ import {
 } from "excalibur";
 import { Machine } from "../utils";
 import { bounceOffEdges, itsBeenAFewSeconds } from "./actor-utils";
-import { LightsOpacity, radius, ShipColors, ShipNames } from "./constants";
+import { LightsOpacity, radius, ShipColors } from "./constants";
 import { buildShipState } from "./state";
 
 type Off = "Off";
@@ -29,7 +29,6 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
     x,
     y,
     radius,
-    name: ShipNames[Math.floor(Math.random() * ShipNames.length)],
     color: ShipColors[Math.floor(Math.random() * ShipColors.length)]
   });
 

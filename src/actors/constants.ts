@@ -6,9 +6,8 @@ export const ShipColors = [
   Color.Azure,
   Color.Magenta
 ];
-
 export const radius = 3;
-export const ShipNames = ["Trader", "Pirate"];
+
 export const LightsOpacity = {
   OFF: 0.2,
   ON: 1
