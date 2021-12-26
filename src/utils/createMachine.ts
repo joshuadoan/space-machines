@@ -33,9 +33,8 @@ export function createMachine<S, T>(
     value: initialState,
     transition(currentState: State<S>, transitionName: T) {
       const { states } = stateMachineDefinition;
-      const currentStateDefinition = states[`${currentState.type}`];
-      const transition =
-        currentStateDefinition.transitions[`${transitionName}`];
+      const { transitions } = states[`${currentState.type}`];
+      const transition = transitions[`${transitionName}`];
 
       transition.effect();
       transition.nextState.at = new Date();
