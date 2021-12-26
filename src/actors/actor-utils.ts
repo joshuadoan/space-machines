@@ -1,5 +1,5 @@
 import { Actor, Engine, vec } from "excalibur";
-import { LightsOpacity, ONE_SECOND } from "./constants";
+import { LightsOpacity } from "./constants";
 
 export const flyInRandomDirection = (actor: Actor) => {
   actor.vel = vec(

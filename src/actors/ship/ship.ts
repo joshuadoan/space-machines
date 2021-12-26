@@ -7,7 +7,7 @@ import {
 } from "excalibur";
 import { Machine, State } from "../../utils";
 import { bounceOffEdges, itsBeenAFewSeconds } from "../actor-utils";
-import { LightsOpacity, ONE_SECOND, radius, ShipColors } from "../constants";
+import { LightsOpacity, radius, ShipColors } from "../constants";
 import { buildShipState } from "./state";
 
 type Off = "Off";
