@@ -9,7 +9,7 @@ export type StateMachineDefinition = {
 
 export type State = {
   type: string;
-  at?: Date;
+  at: Date;
 };
 
 type Transition = {

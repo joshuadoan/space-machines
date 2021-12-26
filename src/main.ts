@@ -33,13 +33,13 @@ const setup = (game: Engine) => {
 
       switch (state.type) {
         case "Off": {
-          if (timeDiff > 1 * ONE_SECOND || !state.at) {
+          if (timeDiff > 1 * ONE_SECOND) {
             ship.state.transition(state, Transitions.TurnOnEngine);
           }
           break;
         }
         case "Idle": {
-          if (timeDiff > 1 * ONE_SECOND || !state.at) {
+          if (timeDiff > 1 * ONE_SECOND) {
             ship.state.transition(state, Transitions.FlyToRandomPoint);
           }
 

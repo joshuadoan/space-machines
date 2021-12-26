@@ -42,10 +42,12 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   });
 
   ship.body.collisionType = CollisionType.Passive;
+  ship.graphics.opacity = 0.2;
 
   const state: Machine = createMachine({
     initialState: {
-      type: States.Off
+      type: States.Off,
+      at: new Date()
     },
     states: {
       [States.Off]: {
@@ -65,7 +67,8 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
         transitions: {
           [Transitions.FlyToRandomPoint]: {
             target: {
-              type: States.Flying
+              type: States.Flying,
+              at: new Date()
             },
             effect() {
               flyInRandomDirection(ship);
@@ -77,7 +80,8 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
         transitions: {
           [Transitions.TurnOffEngine]: {
             target: {
-              type: States.Off
+              type: States.Off,
+              at: new Date()
             },
             effect() {
               stop(ship);
