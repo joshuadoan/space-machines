@@ -9,6 +9,8 @@ export const ShipColors = [
 
 export const radius = 3;
 
+export const ONE_SECOND = 1000;
+
 export const NUMBER_OF_SHIPS = 100;
 
 export const LightsOpacity = {

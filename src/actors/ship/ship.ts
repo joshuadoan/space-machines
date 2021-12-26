@@ -5,9 +5,9 @@ import {
   PostUpdateEvent,
   PreUpdateEvent
 } from "excalibur";
-import { Machine, State } from "../utils";
-import { bounceOffEdges, itsBeenAFewSeconds } from "./actor-utils";
-import { LightsOpacity, radius, ShipColors } from "./constants";
+import { Machine, State } from "../../utils";
+import { bounceOffEdges, itsBeenAFewSeconds } from "../actor-utils";
+import { LightsOpacity, ONE_SECOND, radius, ShipColors } from "../constants";
 import { buildShipState } from "./state";
 
 type Off = "Off";
@@ -55,7 +55,12 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
 
     switch (stateMachine.value.type) {
       case "Off": {
-        if (itsBeenAFewSeconds(stateMachine.value.at, 1)) {
+        if (
+          itsBeenAFewSeconds(
+            stateMachine.value.at,
+            Math.floor(Math.random() * 1000)
+          )
+        ) {
           stateMachine.transition(stateMachine.value, "Turn on engine");
         }
         break;

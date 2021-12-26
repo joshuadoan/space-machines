@@ -1,11 +1,11 @@
-import { createMachine } from "../utils";
+import { createMachine } from "../../utils";
 import { Ship, ShipStates, ShipTransitions } from "./ship";
 import {
   dimLights,
   flyInRandomDirection,
   turnOnLights,
   stop
-} from "./actor-utils";
+} from "../actor-utils";
 
 export const buildShipState = (ship: Ship) =>
   createMachine<ShipStates, ShipTransitions>({

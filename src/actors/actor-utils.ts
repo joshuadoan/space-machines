@@ -1,5 +1,5 @@
 import { Actor, Engine, vec } from "excalibur";
-import { LightsOpacity } from "./constants";
+import { LightsOpacity, ONE_SECOND } from "./constants";
 
 export const flyInRandomDirection = (actor: Actor) => {
   actor.vel = vec(
@@ -20,12 +20,11 @@ export const turnOnLights = (actor: Actor) => {
   actor.graphics.opacity = LightsOpacity.ON;
 };
 
-const ONE_SECOND = 1000;
 export const itsBeenAFewSeconds = (timeStarted: Date, seconds: number) => {
   const now = new Date().getTime();
   const timeDiff = now - timeStarted.getTime();
 
-  return timeDiff > seconds * ONE_SECOND;
+  return timeDiff > seconds * 1000;
 };
 
 export const bounceOffEdges = (actor: Actor, game: Engine) => {

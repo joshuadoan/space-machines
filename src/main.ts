@@ -1,6 +1,6 @@
 import { Engine, DisplayMode, Color } from "excalibur";
 import { NUMBER_OF_SHIPS } from "./actors/constants";
-import { createShip } from "./actors/ship";
+import { createShip } from "./actors/ship/ship";
 
 const game = new Engine({
   displayMode: DisplayMode.FillScreen,
