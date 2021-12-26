@@ -1,11 +1,20 @@
-import { Actor, CollisionType, Color, PostUpdateEvent } from "excalibur";
-import { bounceOffEdges, createMachine, Machine } from "../utils";
+import {
+  Actor,
+  CollisionStartEvent,
+  CollisionType,
+  Color,
+  PostUpdateEvent,
+  PreUpdateEvent
+} from "excalibur";
+import { bounceOffEdges, createMachine, Machine, State } from "../utils";
 import {
   dimLights,
   flyInRandomDirection,
   turnOnLights,
   stop
 } from "./shipUtils";
+
+const ONE_SECOND = 1000;
 
 export const ShipColors = [
   Color.DarkGray,
@@ -17,11 +26,17 @@ export const ShipColors = [
 export const radius = 4;
 export const ShipNames = ["Trader", "Pirate"];
 
-export enum States {
-  Off = "Off",
-  Idle = "Idle",
-  Flying = "Flying"
-}
+type Off = "Off";
+type Idle = "Idle";
+type Flying = "Flying";
+
+export type ShipStates = Off | Idle | Flying;
+
+type TurnOffEngine = "Turn off engine";
+type TurnOnEngine = "Turn on engine";
+type FlyToRandomPoint = "Fly to random point";
+
+export type ShipTransitions = TurnOffEngine | TurnOnEngine | FlyToRandomPoint;
 
 export enum Transitions {
   TurnOffEngine = "Turn off engine",
@@ -44,17 +59,17 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   ship.body.collisionType = CollisionType.Passive;
   ship.graphics.opacity = 0.2;
 
-  const state: Machine = createMachine({
+  const state: Machine<ShipStates> = createMachine<ShipStates>({
     initialState: {
-      type: States.Off,
+      type: "Off",
       at: new Date()
     },
     states: {
-      [States.Off]: {
+      Off: {
         transitions: {
           [Transitions.TurnOnEngine]: {
-            target: {
-              type: States.Idle,
+            nextState: {
+              type: "Idle",
               at: new Date()
             },
             effect() {
@@ -63,11 +78,11 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
           }
         }
       },
-      [States.Idle]: {
+      Idle: {
         transitions: {
           [Transitions.FlyToRandomPoint]: {
-            target: {
-              type: States.Flying,
+            nextState: {
+              type: "Flying",
               at: new Date()
             },
             effect() {
@@ -76,11 +91,11 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
           }
         }
       },
-      [States.Flying]: {
+      Flying: {
         transitions: {
           [Transitions.TurnOffEngine]: {
-            target: {
-              type: States.Off,
+            nextState: {
+              type: "Off",
               at: new Date()
             },
             effect() {
@@ -95,9 +110,40 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
 
   ship.state = state;
 
-  /**
-   * Post update events
-   */
+  ship.on("preupdate", (e: PreUpdateEvent) => {
+    const ship = e.target as Ship;
+    const state = ship.state.value as State<ShipStates>;
+
+    const now = new Date().getTime();
+    const timeStarted = state.at ? state.at.getTime() : now;
+    const timeDiff = now - timeStarted;
+
+    switch (state.type) {
+      case "Off": {
+        if (timeDiff > 1 * ONE_SECOND) {
+          ship.state.transition(state, Transitions.TurnOnEngine);
+        }
+        break;
+      }
+      case "Idle": {
+        if (timeDiff > 1 * ONE_SECOND) {
+          ship.state.transition(state, Transitions.FlyToRandomPoint);
+        }
+
+        break;
+      }
+    }
+  });
+
+  ship.on("collisionstart", (e: CollisionStartEvent) => {
+    const ship = e.target as Ship;
+    const state = ship.state.value as State<ShipStates>;
+
+    if (state.type === "Flying") {
+      ship.state.transition(state, Transitions.TurnOffEngine);
+    }
+  });
+
   ship.on("postupdate", (e: PostUpdateEvent) => {
     const ship = e.target as Ship;
     bounceOffEdges(ship, e.engine);

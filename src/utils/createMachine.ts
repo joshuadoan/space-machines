@@ -1,45 +1,56 @@
-export type StateMachineDefinition = {
-  initialState: State;
+import { ShipStates } from "../actors/ship";
+
+export type StateMachineDefinition<T> = {
+  initialState: State<T>;
   states: {
     [key: string]: {
-      transitions: Transition;
+      transitions: Transition<T>;
     };
   };
 };
 
-export type State = {
-  type: string;
+export type State<T> = {
+  type: T;
   at: Date;
 };
 
-type Transition = {
+type Transition<T> = {
   [key: string]: {
-    target: State;
+    nextState: State<T>;
     effect?: () => void;
   };
 };
 
-export type Machine = {
-  value: State;
-  transition(currentState: State, transition: string): State;
+export type Machine<T> = {
+  value: State<T>;
+  transition(
+    currentState: State<ShipStates>,
+    transitionName: string
+  ): State<T> | State<ShipStates>;
 };
 
-export function createMachine(
-  stateMachineDefinition: StateMachineDefinition
-): Machine {
+export function createMachine<T>(
+  stateMachineDefinition: StateMachineDefinition<T>
+): Machine<T> {
   const { initialState } = stateMachineDefinition;
 
   const machine = {
     value: initialState,
-    transition(currentState: State, transitionName: string) {
+    transition(currentState: State<ShipStates>, transitionName: string) {
       const { states } = stateMachineDefinition;
 
+      /**
+       * Was a valid state passed in?
+       */
       const currentStateDefinition = states[currentState.type];
       if (!currentStateDefinition) {
         console.warn(`Unknown state ✨${currentState}✨`);
         return currentState;
       }
 
+      /**
+       * Does this state allow this transition
+       */
       const transition = currentStateDefinition.transitions[transitionName];
       if (!transition) {
         console.warn(
@@ -49,20 +60,20 @@ export function createMachine(
       }
 
       /**
-       * Run the effect for the transition
+       * Effects on transitions run before we move to the next state
        */
       transition.effect && transition.effect();
 
       /**
-       * Apply a time stamp to the action
+       * Log a time stamp of the transition so the next state has a start time
        */
-      transition.target.at = new Date();
+      transition.nextState.at = new Date();
 
       /**
-       * Transition to the destination state
+       * Transition to the next state
        */
-      machine.value = transition.target;
-      return transition.target;
+      machine.value = transition.nextState;
+      return transition.nextState;
     }
   };
   return machine;
