@@ -8,7 +8,7 @@ const game = new Engine({
   backgroundColor: Color.Black
 });
 
-const setup = (game: Engine) => {
+const init = (game: Engine) => {
   [...Array(NUMBER_OF_SHIPS)].forEach(() => {
     const ship = CreateShip({
       x: Math.floor(Math.random() * game.drawWidth),
@@ -16,8 +16,8 @@ const setup = (game: Engine) => {
     });
 
     game.add(ship);
+    game.start();
   });
 };
 
-setup(game);
-game.start();
+init(game);
