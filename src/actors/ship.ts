@@ -5,7 +5,7 @@ import {
   PostUpdateEvent,
   PreUpdateEvent
 } from "excalibur";
-import { Machine } from "../utils";
+import { Machine, State } from "../utils";
 import { bounceOffEdges, itsBeenAFewSeconds } from "./actor-utils";
 import { LightsOpacity, radius, ShipColors } from "./constants";
 import { buildShipState } from "./state";
@@ -20,8 +20,15 @@ type TurnOnEngine = "Turn on engine";
 type FlyToRandomPoint = "Fly to random point";
 export type ShipTransitions = TurnOffEngine | TurnOnEngine | FlyToRandomPoint;
 
+const initialState: State<ShipStates> = {
+  type: "Off",
+  at: new Date()
+};
 export class Ship extends Actor {
-  public state: any;
+  public state: Machine<ShipStates, ShipTransitions> = {
+    value: initialState,
+    transition: () => initialState
+  };
 }
 
 export const createShip = ({ x, y }: { x: number; y: number }) => {
@@ -38,7 +45,11 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
   const state: Machine<ShipStates, ShipTransitions> = buildShipState(ship);
   ship.state = state;
 
-  const handleUpdate = (e: PreUpdateEvent) => {
+  ship.on("preupdate", handleUpdate);
+  ship.on("collisionstart", handleCollision);
+  ship.on("postupdate", handlePostUpdate);
+
+  function handleUpdate(e: PreUpdateEvent) {
     const ship = e.target as Ship;
     const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
 
@@ -56,25 +67,21 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
         break;
       }
     }
-  };
+  }
 
-  const handleCollision = (e: CollisionStartEvent) => {
+  function handleCollision(e: CollisionStartEvent) {
     const ship = e.target as Ship;
     const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
 
     if (stateMachine.value.type === "Flying") {
       stateMachine.transition(stateMachine.value, "Turn off engine");
     }
-  };
+  }
 
-  const handlePostUpdate = (e: PostUpdateEvent) => {
+  function handlePostUpdate(e: PostUpdateEvent) {
     const ship = e.target as Ship;
     bounceOffEdges(ship, e.engine);
-  };
-
-  ship.on("preupdate", handleUpdate);
-  ship.on("collisionstart", handleCollision);
-  ship.on("postupdate", handlePostUpdate);
+  }
 
   return ship;
 };
