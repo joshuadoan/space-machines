@@ -26,19 +26,14 @@ type Flying = "Flying";
 
 export type ShipStates = Off | Idle | Flying;
 
-type TurnOffEngine = "Turn off engine";
-type TurnOnEngine = "Turn on engine";
-type FlyToRandomPoint = "Fly to random point";
+export type TurnOffEngine = "Turn off engine";
+export type TurnOnEngine = "Turn on engine";
+export type FlyToRandomPoint = "Fly to random point";
 
 export type ShipTransitions = TurnOffEngine | TurnOnEngine | FlyToRandomPoint;
 
-export enum Transitions {
-  TurnOffEngine = "Turn off engine",
-  TurnOnEngine = "Turn on engine",
-  FlyToRandomPoint = "Fly to random point"
-}
 export class Ship extends Actor {
-  public state: any;
+  public stateMachine: any;
 }
 
 export const CreateShip = ({ x, y }: { x: number; y: number }) => {
@@ -54,22 +49,25 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   ship.graphics.opacity = 0.2;
 
   const state: Machine<ShipStates, ShipTransitions> = buildShipState(ship);
-  ship.state = state;
+  ship.stateMachine = state;
 
   ship.on("preupdate", (e: PreUpdateEvent) => {
     const ship = e.target as Ship;
-    const state = ship.state.value as State<ShipStates>;
+    const stateMachine = ship.stateMachine as Machine<
+      ShipStates,
+      ShipTransitions
+    >;
 
-    switch (state.type) {
+    switch (stateMachine.value.type) {
       case "Off": {
-        if (itsBeenAFewSeconds(state.at)) {
-          ship.state.transition(state, Transitions.TurnOnEngine);
+        if (itsBeenAFewSeconds(state.value.at)) {
+          stateMachine.transition(state.value, "Turn on engine");
         }
         break;
       }
       case "Idle": {
-        if (itsBeenAFewSeconds(state.at)) {
-          ship.state.transition(state, Transitions.FlyToRandomPoint);
+        if (itsBeenAFewSeconds(state.value.at)) {
+          stateMachine.transition(state.value, "Fly to random point");
         }
         break;
       }
@@ -78,10 +76,13 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
 
   ship.on("collisionstart", (e: CollisionStartEvent) => {
     const ship = e.target as Ship;
-    const state = ship.state.value as State<ShipStates>;
+    const stateMachine = ship.stateMachine as Machine<
+      ShipStates,
+      ShipTransitions
+    >;``
 
-    if (state.type === "Flying") {
-      ship.state.transition(state, Transitions.TurnOffEngine);
+    if (stateMachine.value.type === "Flying") {
+      stateMachine.transition(stateMachine.value, "Turn off engine");
     }
   });
 

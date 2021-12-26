@@ -16,7 +16,7 @@ export const buildShipState = (ship: Ship) =>
     states: {
       Off: {
         transitions: {
-          [Transitions.TurnOnEngine]: {
+          "Turn on engine": {
             nextState: {
               type: "Idle",
               at: new Date()
@@ -29,7 +29,7 @@ export const buildShipState = (ship: Ship) =>
       },
       Idle: {
         transitions: {
-          [Transitions.FlyToRandomPoint]: {
+          "Fly to random point": {
             nextState: {
               type: "Flying",
               at: new Date()
@@ -42,7 +42,7 @@ export const buildShipState = (ship: Ship) =>
       },
       Flying: {
         transitions: {
-          [Transitions.TurnOffEngine]: {
+          "Turn off engine": {
             nextState: {
               type: "Off",
               at: new Date()
