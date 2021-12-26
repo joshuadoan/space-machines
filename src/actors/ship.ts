@@ -7,7 +7,7 @@ import {
   PreUpdateEvent
 } from "excalibur";
 import { Machine, State } from "../utils";
-import { bounceOffEdges, itsBeenAFewSeconds } from "./shipUtils";
+import { bounceOffEdges, itsBeenAFewSeconds } from "./actor-utils";
 import { buildShipState } from "./state";
 
 export const ShipColors = [

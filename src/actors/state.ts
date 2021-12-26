@@ -5,7 +5,7 @@ import {
   flyInRandomDirection,
   turnOnLights,
   stop
-} from "./shipUtils";
+} from "./actor-utils";
 
 export const buildShipState = (ship: Ship) =>
   createMachine<ShipStates>({
