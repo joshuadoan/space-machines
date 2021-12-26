@@ -24,7 +24,7 @@ export class Ship extends Actor {
   public state: any;
 }
 
-export const CreateShip = ({ x, y }: { x: number; y: number }) => {
+export const createShip = ({ x, y }: { x: number; y: number }) => {
   const ship = new Ship({
     x,
     y,
@@ -44,13 +44,13 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
 
     switch (stateMachine.value.type) {
       case "Off": {
-        if (itsBeenAFewSeconds(stateMachine.value.at)) {
+        if (itsBeenAFewSeconds(stateMachine.value.at, 1)) {
           stateMachine.transition(stateMachine.value, "Turn on engine");
         }
         break;
       }
       case "Idle": {
-        if (itsBeenAFewSeconds(stateMachine.value.at)) {
+        if (itsBeenAFewSeconds(stateMachine.value.at, 1)) {
           stateMachine.transition(stateMachine.value, "Fly to random point");
         }
         break;

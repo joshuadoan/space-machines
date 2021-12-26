@@ -6,7 +6,10 @@ export const ShipColors = [
   Color.Azure,
   Color.Magenta
 ];
+
 export const radius = 3;
+
+export const NUMBER_OF_SHIPS = 100;
 
 export const LightsOpacity = {
   OFF: 0.2,

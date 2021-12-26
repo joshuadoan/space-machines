@@ -21,11 +21,11 @@ export const turnOnLights = (actor: Actor) => {
 };
 
 const ONE_SECOND = 1000;
-export const itsBeenAFewSeconds = (timeStarted: Date) => {
+export const itsBeenAFewSeconds = (timeStarted: Date, seconds: number) => {
   const now = new Date().getTime();
   const timeDiff = now - timeStarted.getTime();
 
-  return timeDiff > 1 * ONE_SECOND;
+  return timeDiff > seconds * ONE_SECOND;
 };
 
 export const bounceOffEdges = (actor: Actor, game: Engine) => {
