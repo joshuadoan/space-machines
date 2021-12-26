@@ -53,7 +53,7 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   ship.body.collisionType = CollisionType.Passive;
   ship.graphics.opacity = 0.2;
 
-  const state: Machine<ShipStates> = buildShipState(ship);
+  const state: Machine<ShipStates, ShipTransitions> = buildShipState(ship);
   ship.state = state;
 
   ship.on("preupdate", (e: PreUpdateEvent) => {

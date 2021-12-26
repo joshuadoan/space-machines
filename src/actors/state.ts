@@ -1,5 +1,5 @@
 import { createMachine } from "../utils";
-import { Ship, ShipStates, Transitions } from "./ship";
+import { Ship, ShipStates, ShipTransitions, Transitions } from "./ship";
 import {
   dimLights,
   flyInRandomDirection,
@@ -8,7 +8,7 @@ import {
 } from "./actor-utils";
 
 export const buildShipState = (ship: Ship) =>
-  createMachine<ShipStates>({
+  createMachine<ShipStates, ShipTransitions>({
     initialState: {
       type: "Off",
       at: new Date()

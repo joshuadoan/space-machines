@@ -1,5 +1,3 @@
-import { ShipTransitions } from "../actors/ship";
-
 export type StateMachineDefinition<S> = {
   initialState: State<S>;
   states: {
@@ -21,22 +19,23 @@ type Transition<S> = {
   };
 };
 
-export type Machine<S> = {
+export type Machine<S, T> = {
   value: State<S>;
-  transition(currentState: State<S>, transitionName: ShipTransitions): State<S>;
+  transition(currentState: State<S>, transitionName: T): State<S>;
 };
 
-export function createMachine<S>(
+export function createMachine<S, T>(
   stateMachineDefinition: StateMachineDefinition<S>
-): Machine<S> {
+): Machine<S, T> {
   const { initialState } = stateMachineDefinition;
 
   const machine = {
     value: initialState,
-    transition(currentState: State<S>, transitionName: ShipTransitions) {
+    transition(currentState: State<S>, transitionName: T) {
       const { states } = stateMachineDefinition;
       const currentStateDefinition = states[`${currentState.type}`];
-      const transition = currentStateDefinition.transitions[transitionName];
+      const transition =
+        currentStateDefinition.transitions[`${transitionName}`];
 
       transition.effect();
       transition.nextState.at = new Date();
