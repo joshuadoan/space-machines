@@ -2,23 +2,13 @@ import {
   Actor,
   CollisionStartEvent,
   CollisionType,
-  Color,
   PostUpdateEvent,
   PreUpdateEvent
 } from "excalibur";
-import { Machine, State } from "../utils";
+import { Machine } from "../utils";
 import { bounceOffEdges, itsBeenAFewSeconds } from "./actor-utils";
+import { radius, ShipColors, ShipNames } from "./constants";
 import { buildShipState } from "./state";
-
-export const ShipColors = [
-  Color.DarkGray,
-  Color.LightGray,
-  Color.Azure,
-  Color.Magenta
-];
-
-export const radius = 2;
-export const ShipNames = ["Trader", "Pirate"];
 
 type Off = "Off";
 type Idle = "Idle";
@@ -51,7 +41,7 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   const state: Machine<ShipStates, ShipTransitions> = buildShipState(ship);
   ship.stateMachine = state;
 
-  ship.on("preupdate", (e: PreUpdateEvent) => {
+  const handleUpdate = (e: PreUpdateEvent) => {
     const ship = e.target as Ship;
     const stateMachine = ship.stateMachine as Machine<
       ShipStates,
@@ -72,19 +62,23 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
         break;
       }
     }
-  });
+  };
 
-  ship.on("collisionstart", (e: CollisionStartEvent) => {
+  const handleCollision = (e: CollisionStartEvent) => {
     const ship = e.target as Ship;
     const stateMachine = ship.stateMachine as Machine<
       ShipStates,
       ShipTransitions
-    >;``
+    >;
 
     if (stateMachine.value.type === "Flying") {
       stateMachine.transition(stateMachine.value, "Turn off engine");
     }
-  });
+  };
+
+  ship.on("preupdate", handleUpdate);
+
+  ship.on("collisionstart", handleCollision);
 
   ship.on("postupdate", (e: PostUpdateEvent) => {
     const ship = e.target as Ship;
