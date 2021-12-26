@@ -110,23 +110,26 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
 
   ship.state = state;
 
+  const itsBeenAFewSeconds = (timeStarted: Date) => {
+    const now = new Date().getTime();
+    const timeDiff = now - timeStarted.getTime();
+
+    return timeDiff > 1 * ONE_SECOND;
+  };
+
   ship.on("preupdate", (e: PreUpdateEvent) => {
     const ship = e.target as Ship;
     const state = ship.state.value as State<ShipStates>;
 
-    const now = new Date().getTime();
-    const timeStarted = state.at ? state.at.getTime() : now;
-    const timeDiff = now - timeStarted;
-
     switch (state.type) {
       case "Off": {
-        if (timeDiff > 1 * ONE_SECOND) {
+        if (itsBeenAFewSeconds(state.at)) {
           ship.state.transition(state, Transitions.TurnOnEngine);
         }
         break;
       }
       case "Idle": {
-        if (timeDiff > 1 * ONE_SECOND) {
+        if (itsBeenAFewSeconds(state.at)) {
           ship.state.transition(state, Transitions.FlyToRandomPoint);
         }
 

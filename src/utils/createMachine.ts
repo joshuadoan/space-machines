@@ -25,7 +25,7 @@ export type Machine<T> = {
   value: State<T>;
   transition(
     currentState: State<ShipStates>,
-    transitionName: string
+    transitionName: ShipStates
   ): State<T> | State<ShipStates>;
 };
 
