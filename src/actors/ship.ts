@@ -13,13 +13,11 @@ import { buildShipState } from "./state";
 type Off = "Off";
 type Idle = "Idle";
 type Flying = "Flying";
-
 export type ShipStates = Off | Idle | Flying;
 
-export type TurnOffEngine = "Turn off engine";
-export type TurnOnEngine = "Turn on engine";
-export type FlyToRandomPoint = "Fly to random point";
-
+type TurnOffEngine = "Turn off engine";
+type TurnOnEngine = "Turn on engine";
+type FlyToRandomPoint = "Fly to random point";
 export type ShipTransitions = TurnOffEngine | TurnOnEngine | FlyToRandomPoint;
 
 export class Ship extends Actor {
@@ -70,12 +68,14 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
     }
   };
 
-  ship.on("preupdate", handleUpdate);
-  ship.on("collisionstart", handleCollision);
-  ship.on("postupdate", (e: PostUpdateEvent) => {
+  const handlePostUpdate = (e: PostUpdateEvent) => {
     const ship = e.target as Ship;
     bounceOffEdges(ship, e.engine);
-  });
+  };
+
+  ship.on("preupdate", handleUpdate);
+  ship.on("collisionstart", handleCollision);
+  ship.on("postupdate", handlePostUpdate);
 
   return ship;
 };
