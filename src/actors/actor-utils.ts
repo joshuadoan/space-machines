@@ -1,4 +1,5 @@
 import { Actor, Engine, vec } from "excalibur";
+import { LightsOpacity } from "./constants";
 
 export const flyInRandomDirection = (actor: Actor) => {
   actor.vel = vec(
@@ -12,11 +13,11 @@ export const stop = (actor: Actor) => {
 };
 
 export const dimLights = (actor: Actor) => {
-  actor.graphics.opacity = 0.2;
+  actor.graphics.opacity = LightsOpacity.OFF;
 };
 
 export const turnOnLights = (actor: Actor) => {
-  actor.graphics.opacity = 1;
+  actor.graphics.opacity = LightsOpacity.ON;
 };
 
 const ONE_SECOND = 1000;

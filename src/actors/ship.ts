@@ -7,7 +7,7 @@ import {
 } from "excalibur";
 import { Machine } from "../utils";
 import { bounceOffEdges, itsBeenAFewSeconds } from "./actor-utils";
-import { radius, ShipColors, ShipNames } from "./constants";
+import { LightsOpacity, radius, ShipColors, ShipNames } from "./constants";
 import { buildShipState } from "./state";
 
 type Off = "Off";
@@ -34,7 +34,7 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   });
 
   ship.body.collisionType = CollisionType.Passive;
-  ship.graphics.opacity = 0.2;
+  ship.graphics.opacity = LightsOpacity.OFF;
 
   const state: Machine<ShipStates, ShipTransitions> = buildShipState(ship);
   ship.state = state;
