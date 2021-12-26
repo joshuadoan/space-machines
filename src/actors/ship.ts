@@ -6,15 +6,9 @@ import {
   PostUpdateEvent,
   PreUpdateEvent
 } from "excalibur";
-import { bounceOffEdges, createMachine, Machine, State } from "../utils";
-import {
-  dimLights,
-  flyInRandomDirection,
-  turnOnLights,
-  stop
-} from "./shipUtils";
-
-const ONE_SECOND = 1000;
+import { bounceOffEdges, Machine, State } from "../utils";
+import { itsBeenAFewSeconds } from "./shipUtils";
+import { buildShipState } from "./state";
 
 export const ShipColors = [
   Color.DarkGray,
@@ -23,7 +17,7 @@ export const ShipColors = [
   Color.Magenta
 ];
 
-export const radius = 4;
+export const radius = 2;
 export const ShipNames = ["Trader", "Pirate"];
 
 type Off = "Off";
@@ -59,63 +53,8 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
   ship.body.collisionType = CollisionType.Passive;
   ship.graphics.opacity = 0.2;
 
-  const state: Machine<ShipStates> = createMachine<ShipStates>({
-    initialState: {
-      type: "Off",
-      at: new Date()
-    },
-    states: {
-      Off: {
-        transitions: {
-          [Transitions.TurnOnEngine]: {
-            nextState: {
-              type: "Idle",
-              at: new Date()
-            },
-            effect() {
-              turnOnLights(ship);
-            }
-          }
-        }
-      },
-      Idle: {
-        transitions: {
-          [Transitions.FlyToRandomPoint]: {
-            nextState: {
-              type: "Flying",
-              at: new Date()
-            },
-            effect() {
-              flyInRandomDirection(ship);
-            }
-          }
-        }
-      },
-      Flying: {
-        transitions: {
-          [Transitions.TurnOffEngine]: {
-            nextState: {
-              type: "Off",
-              at: new Date()
-            },
-            effect() {
-              stop(ship);
-              dimLights(ship);
-            }
-          }
-        }
-      }
-    }
-  });
-
+  const state: Machine<ShipStates> = buildShipState(ship);
   ship.state = state;
-
-  const itsBeenAFewSeconds = (timeStarted: Date) => {
-    const now = new Date().getTime();
-    const timeDiff = now - timeStarted.getTime();
-
-    return timeDiff > 1 * ONE_SECOND;
-  };
 
   ship.on("preupdate", (e: PreUpdateEvent) => {
     const ship = e.target as Ship;
@@ -132,7 +71,6 @@ export const CreateShip = ({ x, y }: { x: number; y: number }) => {
         if (itsBeenAFewSeconds(state.at)) {
           ship.state.transition(state, Transitions.FlyToRandomPoint);
         }
-
         break;
       }
     }

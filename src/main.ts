@@ -1,7 +1,7 @@
 import { Engine, DisplayMode, Color } from "excalibur";
 import { CreateShip } from "./actors/ship";
 
-const NUMBER_OF_SHIPS = 100;
+const NUMBER_OF_SHIPS = 500;
 
 const game = new Engine({
   displayMode: DisplayMode.FillScreen,

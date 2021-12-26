@@ -18,3 +18,11 @@ export const dimLights = (actor: Actor) => {
 export const turnOnLights = (actor: Actor) => {
   actor.graphics.opacity = 1;
 };
+
+const ONE_SECOND = 1000;
+export const itsBeenAFewSeconds = (timeStarted: Date) => {
+  const now = new Date().getTime();
+  const timeDiff = now - timeStarted.getTime();
+
+  return timeDiff > 1 * ONE_SECOND;
+};

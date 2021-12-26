@@ -1,42 +1,45 @@
-import { ShipStates } from "../actors/ship";
+import { ShipStates, ShipTransitions } from "../actors/ship";
 
-export type StateMachineDefinition<T> = {
-  initialState: State<T>;
+export type StateMachineDefinition<S> = {
+  initialState: State<S>;
   states: {
     [key: string]: {
-      transitions: Transition<T>;
+      transitions: Transition<S>;
     };
   };
 };
 
-export type State<T> = {
-  type: T;
+export type State<S> = {
+  type: S;
   at: Date;
 };
 
-type Transition<T> = {
+type Transition<S> = {
   [key: string]: {
-    nextState: State<T>;
+    nextState: State<S>;
     effect?: () => void;
   };
 };
 
-export type Machine<T> = {
-  value: State<T>;
+export type Machine<S> = {
+  value: State<S>;
   transition(
     currentState: State<ShipStates>,
-    transitionName: ShipStates
-  ): State<T> | State<ShipStates>;
+    transitionName: ShipTransitions
+  ): State<S> | State<ShipStates>;
 };
 
-export function createMachine<T>(
-  stateMachineDefinition: StateMachineDefinition<T>
-): Machine<T> {
+export function createMachine<S>(
+  stateMachineDefinition: StateMachineDefinition<S>
+): Machine<S> {
   const { initialState } = stateMachineDefinition;
 
   const machine = {
     value: initialState,
-    transition(currentState: State<ShipStates>, transitionName: string) {
+    transition(
+      currentState: State<ShipStates>,
+      transitionName: ShipTransitions
+    ) {
       const { states } = stateMachineDefinition;
 
       /**
