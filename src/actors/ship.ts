@@ -6,8 +6,8 @@ import {
   PostUpdateEvent,
   PreUpdateEvent
 } from "excalibur";
-import { bounceOffEdges, Machine, State } from "../utils";
-import { itsBeenAFewSeconds } from "./shipUtils";
+import { Machine, State } from "../utils";
+import { bounceOffEdges, itsBeenAFewSeconds } from "./shipUtils";
 import { buildShipState } from "./state";
 
 export const ShipColors = [
