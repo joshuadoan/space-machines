@@ -3,11 +3,13 @@ import {
   CollisionStartEvent,
   CollisionType,
   PostUpdateEvent,
-  PreUpdateEvent
+  PreUpdateEvent,
+  vec
 } from "excalibur";
 import { Machine, State } from "../../utils";
 import { bounceOffEdges, itsBeenAFewSeconds } from "../actor-utils";
 import { LightsOpacity, radius, ShipColors } from "../constants";
+import { SpaceStation } from "../space-station/space-station";
 import { buildShipState } from "./state";
 
 type Off = "Off";
@@ -33,8 +35,7 @@ export class Ship extends Actor {
 
 export const createShip = ({ x, y }: { x: number; y: number }) => {
   const ship = new Ship({
-    x,
-    y,
+    pos: vec(x, y),
     radius,
     color: ShipColors[Math.floor(Math.random() * ShipColors.length)]
   });
@@ -76,9 +77,10 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
 
   function handleCollision(e: CollisionStartEvent) {
     const ship = e.target as Ship;
+    const other = e.other as SpaceStation;
     const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
 
-    if (stateMachine.value.type === "Flying") {
+    if (other instanceof SpaceStation) {
       stateMachine.transition(stateMachine.value, "Turn off engine");
     }
   }
