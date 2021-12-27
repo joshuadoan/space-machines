@@ -80,9 +80,10 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
     const self = e.target;
     const other = e.other;
 
-    const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
     if (!(self instanceof Ship)) return;
     if (!(other instanceof SpaceStation)) return;
+
+    const stateMachine = self.state as Machine<ShipStates, ShipTransitions>;
     stateMachine.transition(stateMachine.value, "Turn off engine");
   }
 
