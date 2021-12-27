@@ -1,12 +1,5 @@
-import {
-  Actor,
-  CollisionStartEvent,
-  CollisionType,
-  Color,
-  vec
-} from "excalibur";
+import { Actor, CollisionType, Color, vec } from "excalibur";
 import { radius } from "../constants";
-import { Ship } from "../ship/ship";
 
 export class SpaceStation extends Actor {}
 
