@@ -42,12 +42,7 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
 
   ship.body.collisionType = CollisionType.Passive;
   ship.graphics.opacity = LightsOpacity.OFF;
-
-  const state: Machine<ShipStates, ShipTransitions> = buildShipState(
-    ship,
-    initialState
-  );
-  ship.state = state;
+  ship.state = buildShipState(ship, initialState);
 
   ship.on("preupdate", handleUpdate);
   ship.on("collisionstart", handleCollision);
@@ -56,12 +51,11 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
   function handleUpdate(e: PreUpdateEvent) {
     const ship = e.target as Ship;
     const state = ship.state as Machine<ShipStates, ShipTransitions>;
+    const randomNumber = Math.floor(Math.random() * 1000);
 
     switch (state.value.type) {
       case "Off": {
-        if (
-          itsBeenAFewSeconds(state.value.at, Math.floor(Math.random() * 1000))
-        ) {
+        if (itsBeenAFewSeconds(state.value.at, randomNumber)) {
           state.transition(state.value, "Turn on engine");
         }
         break;
