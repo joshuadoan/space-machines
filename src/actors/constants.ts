@@ -7,7 +7,7 @@ export const ShipColors = [
   Color.Magenta
 ];
 
-export const radius = 3;
+export const radius = 4;
 
 export const ONE_SECOND = 1000;
 
