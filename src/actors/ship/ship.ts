@@ -61,7 +61,7 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
         break;
       }
       case "Idle": {
-        if (itsBeenAFewSeconds(state.value.at, 1)) {
+        if (itsBeenAFewSeconds(state.value.at, randomNumber)) {
           state.transition(state.value, "Fly to random point");
         }
         break;
