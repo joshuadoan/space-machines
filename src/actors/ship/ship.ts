@@ -37,7 +37,8 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
   const ship = new Ship({
     pos: vec(x, y),
     radius,
-    color: ShipColors[Math.floor(Math.random() * ShipColors.length)]
+    color: ShipColors[Math.floor(Math.random() * ShipColors.length)],
+    name: "ship"
   });
 
   ship.body.collisionType = CollisionType.Passive;
@@ -76,13 +77,13 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
   }
 
   function handleCollision(e: CollisionStartEvent) {
-    const ship = e.target as Ship;
-    const other = e.other as SpaceStation;
-    const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
+    const self = e.target;
+    const other = e.other;
 
-    if (other instanceof SpaceStation) {
-      stateMachine.transition(stateMachine.value, "Turn off engine");
-    }
+    const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
+    if (!(self instanceof Ship)) return;
+    if (!(other instanceof SpaceStation)) return;
+    stateMachine.transition(stateMachine.value, "Turn off engine");
   }
 
   function handlePostUpdate(e: PostUpdateEvent) {
