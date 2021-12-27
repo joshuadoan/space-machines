@@ -12,6 +12,7 @@ export const createSpaceStation = ({ x, y }: { x: number; y: number }) => {
   });
 
   spaceStation.body.collisionType = CollisionType.Passive;
+  spaceStation.graphics.opacity = 1;
 
   return spaceStation;
 };
