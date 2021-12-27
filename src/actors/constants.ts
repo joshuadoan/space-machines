@@ -14,6 +14,6 @@ export const ONE_SECOND = 1000;
 export const NUMBER_OF_SHIPS = 100;
 
 export const LightsOpacity = {
-  OFF: 0.2,
+  OFF: 0.6,
   ON: 1
 };

@@ -8,17 +8,18 @@ const game = new Engine({
   backgroundColor: Color.Black
 });
 
-[...Array(NUMBER_OF_SHIPS)].forEach(() => {
+[...Array(10)].forEach(() => {
   game.add(
-    createShip({
+    createSpaceStation({
       x: Math.floor(Math.random() * game.drawWidth),
       y: Math.floor(Math.random() * game.drawHeight)
     })
   );
 });
-[...Array(10)].forEach(() => {
+
+[...Array(NUMBER_OF_SHIPS)].forEach(() => {
   game.add(
-    createSpaceStation({
+    createShip({
       x: Math.floor(Math.random() * game.drawWidth),
       y: Math.floor(Math.random() * game.drawHeight)
     })

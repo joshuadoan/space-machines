@@ -79,11 +79,12 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
   function handleCollision(e: CollisionStartEvent) {
     const self = e.target;
     const other = e.other;
-
     if (!(self instanceof Ship)) return;
     if (!(other instanceof SpaceStation)) return;
 
     const stateMachine = self.state as Machine<ShipStates, ShipTransitions>;
+    if (stateMachine.value.type !== "Flying") return;
+
     stateMachine.transition(stateMachine.value, "Turn off engine");
   }
 
