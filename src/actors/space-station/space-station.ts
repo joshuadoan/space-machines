@@ -7,8 +7,7 @@ export const createSpaceStation = ({ x, y }: { x: number; y: number }) => {
   const spaceStation = new SpaceStation({
     pos: vec(x, y),
     radius: radius * 1.5,
-    color: Color.Orange,
-    name: "space-station"
+    color: Color.Orange
   });
 
   spaceStation.body.collisionType = CollisionType.Passive;

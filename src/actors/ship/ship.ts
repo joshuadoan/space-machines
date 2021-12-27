@@ -37,8 +37,7 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
   const ship = new Ship({
     pos: vec(x, y),
     radius,
-    color: ShipColors[Math.floor(Math.random() * ShipColors.length)],
-    name: "ship"
+    color: ShipColors[Math.floor(Math.random() * ShipColors.length)]
   });
 
   ship.body.collisionType = CollisionType.Passive;
