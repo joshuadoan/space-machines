@@ -55,23 +55,20 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
 
   function handleUpdate(e: PreUpdateEvent) {
     const ship = e.target as Ship;
-    const stateMachine = ship.state as Machine<ShipStates, ShipTransitions>;
+    const state = ship.state as Machine<ShipStates, ShipTransitions>;
 
-    switch (stateMachine.value.type) {
+    switch (state.value.type) {
       case "Off": {
         if (
-          itsBeenAFewSeconds(
-            stateMachine.value.at,
-            Math.floor(Math.random() * 1000)
-          )
+          itsBeenAFewSeconds(state.value.at, Math.floor(Math.random() * 1000))
         ) {
-          stateMachine.transition(stateMachine.value, "Turn on engine");
+          state.transition(state.value, "Turn on engine");
         }
         break;
       }
       case "Idle": {
-        if (itsBeenAFewSeconds(stateMachine.value.at, 1)) {
-          stateMachine.transition(stateMachine.value, "Fly to random point");
+        if (itsBeenAFewSeconds(state.value.at, 1)) {
+          state.transition(state.value, "Fly to random point");
         }
         break;
       }
@@ -84,10 +81,10 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
 
     const self = e.target as Ship;
 
-    const stateMachine = self.state as Machine<ShipStates, ShipTransitions>;
-    if (stateMachine.value.type !== "Flying") return;
+    const state = self.state as Machine<ShipStates, ShipTransitions>;
+    if (state.value.type !== "Flying") return;
 
-    stateMachine.transition(stateMachine.value, "Turn off engine");
+    state.transition(state.value, "Turn off engine");
   }
 
   function handlePostUpdate(e: PostUpdateEvent) {
