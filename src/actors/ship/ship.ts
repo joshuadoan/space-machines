@@ -74,7 +74,9 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
     if (!(e.other instanceof SpaceStation)) return;
 
     const state = ship.state as Machine<ShipStates, ShipTransitions>;
-    state.transition(state.value, "Turn off engine");
+    if (state.value.type === "Flying") {
+      state.transition(state.value, "Turn off engine");
+    }
   }
 
   function handlePostUpdate(e: PostUpdateEvent) {
