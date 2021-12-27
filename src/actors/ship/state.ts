@@ -1,4 +1,4 @@
-import { createMachine } from "../../utils";
+import { createMachine, State } from "../../utils";
 import { Ship, ShipStates, ShipTransitions } from "./ship";
 import {
   dimLights,
@@ -7,12 +7,9 @@ import {
   stop
 } from "../actor-utils";
 
-export const buildShipState = (ship: Ship) =>
+export const buildShipState = (ship: Ship, initialState: State<ShipStates>) =>
   createMachine<ShipStates, ShipTransitions>({
-    initialState: {
-      type: "Off",
-      at: new Date()
-    },
+    initialState,
     states: {
       Off: {
         transitions: {

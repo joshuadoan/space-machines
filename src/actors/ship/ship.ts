@@ -43,7 +43,10 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
   ship.body.collisionType = CollisionType.Passive;
   ship.graphics.opacity = LightsOpacity.OFF;
 
-  const state: Machine<ShipStates, ShipTransitions> = buildShipState(ship);
+  const state: Machine<ShipStates, ShipTransitions> = buildShipState(
+    ship,
+    initialState
+  );
   ship.state = state;
 
   ship.on("preupdate", handleUpdate);
@@ -80,6 +83,7 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
     if (!(other instanceof SpaceStation)) return;
 
     const self = e.target as Ship;
+
     const stateMachine = self.state as Machine<ShipStates, ShipTransitions>;
     if (stateMachine.value.type !== "Flying") return;
 
