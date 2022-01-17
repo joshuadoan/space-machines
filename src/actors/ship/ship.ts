@@ -10,17 +10,7 @@ import { Machine, State } from "../../utils";
 import { bounceOffEdges, itsBeenAFewSeconds } from "../actor-utils";
 import { LightsOpacity, radius, ShipColors } from "../constants";
 import { SpaceStation } from "../space-station/space-station";
-import { buildShipState } from "./state";
-
-type Off = "Off";
-type Idle = "Idle";
-type Flying = "Flying";
-export type ShipStates = Off | Idle | Flying;
-
-type TurnOffEngine = "Turn off engine";
-type TurnOnEngine = "Turn on engine";
-type FlyToRandomPoint = "Fly to random point";
-export type ShipTransitions = TurnOffEngine | TurnOnEngine | FlyToRandomPoint;
+import { buildShipState, ShipStates, ShipTransitions } from "./state";
 
 const initialState: State<ShipStates> = {
   type: "Off",
@@ -42,7 +32,7 @@ export const createShip = ({ x, y }: { x: number; y: number }) => {
 
   ship.body.collisionType = CollisionType.Passive;
   ship.graphics.opacity = LightsOpacity.OFF;
-  ship.state = buildShipState(ship, initialState);
+  ship.state = buildShipState(ship);
 
   ship.on("preupdate", handleUpdate);
   ship.on("collisionstart", handleCollision);

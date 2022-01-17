@@ -7,9 +7,22 @@ import {
   stop
 } from "../actor-utils";
 
-export const buildShipState = (ship: Ship, initialState: State<ShipStates>) =>
+type Off = "Off";
+type Idle = "Idle";
+type Flying = "Flying";
+export type ShipStates = Off | Idle | Flying;
+
+type TurnOffEngine = "Turn off engine";
+type TurnOnEngine = "Turn on engine";
+type FlyToRandomPoint = "Fly to random point";
+export type ShipTransitions = TurnOffEngine | TurnOnEngine | FlyToRandomPoint;
+
+export const buildShipState = (ship: Ship) =>
   createMachine<ShipStates, ShipTransitions>({
-    initialState,
+    initialState: {
+      type: "Off",
+      at: new Date()
+    },
     states: {
       Off: {
         transitions: {
