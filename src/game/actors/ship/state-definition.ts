@@ -8,7 +8,11 @@ import {
   plotTradeRoute,
   getRandomScreenPosition
 } from "../../../game-utils";
-import { StateDefinition, StateMachineDefinition } from "./createMachine";
+import {
+  StateDefinition,
+  StateMachineDefinition,
+  Transitions
+} from "./createMachine";
 import { SpaceStation } from "../space-station/space-station";
 import { Total } from "../../../constants";
 
@@ -41,95 +45,107 @@ export let createStateMachineDefinition = (
   ship: Ship,
   initialState: StateDefinition
 ): StateMachineDefinition => {
+  let turnOnEngine: Transitions = {
+    "Turn on engine": {
+      to: { type: "Idle" },
+      effect() {
+        turnOnLights(ship);
+      }
+    }
+  };
+
+  let leave: Transitions = {
+    Leave: {
+      to: { type: "Idle" },
+      effect() {
+        ship.fuel--;
+        turnOnLights(ship);
+      }
+    }
+  };
+
+  let flyToRandomPlace: Transitions = {
+    "Fly to random point": {
+      to: { type: "Exploring" },
+      effect() {
+        let pos = getRandomScreenPosition(ship);
+        flyTo(ship, pos);
+      }
+    }
+  };
+
+  let startTradeRoute: Transitions = {
+    "Begin route": {
+      to: { type: "On a trade route" },
+      effect() {
+        plotTradeRoute(ship);
+      }
+    }
+  };
+
+  let turnOffEngine: Transitions = {
+    "Turn Off engine": {
+      to: { type: "Off" },
+      effect() {
+        stop(ship);
+        dimLights(ship);
+      }
+    }
+  };
+
+  let recharge: Transitions = {
+    Recharge: {
+      to: { type: "Off" },
+      effect() {
+        ship.fuel = Total.Fuel;
+        ship.visited = [];
+      }
+    }
+  };
+
+  let visit: Transitions = {
+    Visit: {
+      to: { type: "Visiting" },
+      effect(other) {
+        stop(ship);
+        dimLights(ship);
+        if (other instanceof SpaceStation) {
+          ship.fuel--;
+          logLocation(ship, other.pos);
+        }
+      }
+    }
+  };
+
   return {
     initialState,
     states: {
       Off: {
         transitions: {
-          "Turn on engine": {
-            to: { type: "Idle" },
-            effect() {
-              turnOnLights(ship);
-            }
-          }
+          ...turnOnEngine
         }
       },
       Visiting: {
         transitions: {
-          Leave: {
-            to: { type: "Idle" },
-            effect() {
-              ship.fuel--;
-              turnOnLights(ship);
-            }
-          }
+          ...leave
         }
       },
       Idle: {
         transitions: {
-          "Fly to random point": {
-            to: { type: "Exploring" },
-            effect() {
-              let pos = getRandomScreenPosition(ship);
-              flyTo(ship, pos);
-            }
-          },
-          "Begin route": {
-            to: { type: "On a trade route" },
-            effect() {
-              plotTradeRoute(ship);
-            }
-          }
+          ...flyToRandomPlace,
+          ...startTradeRoute
         }
       },
       Exploring: {
         transitions: {
-          "Turn Off engine": {
-            to: { type: "Off" },
-            effect() {
-              stop(ship);
-              dimLights(ship);
-            }
-          },
-          Recharge: {
-            to: { type: "Off" },
-            effect() {
-              ship.fuel = Total.Fuel;
-              ship.visited = [];
-            }
-          },
-          Visit: {
-            to: { type: "Visiting" },
-            effect(other) {
-              stop(ship);
-              dimLights(ship);
-              if (other instanceof SpaceStation) {
-                ship.fuel--;
-                logLocation(ship, other.pos);
-              }
-            }
-          }
+          ...turnOffEngine,
+          ...recharge
         }
       },
       "On a trade route": {
         transitions: {
-          Recharge: {
-            to: { type: "Off" },
-            effect() {
-              ship.fuel = Total.Fuel;
-              ship.visited = [];
-            }
-          },
-          Visit: {
-            to: { type: "Visiting" },
-            effect(other) {
-              stop(ship);
-              dimLights(ship);
-              if (other instanceof SpaceStation) {
-                ship.fuel--;
-              }
-            }
-          }
+          ...visit,
+          ...recharge
         }
       }
     }
