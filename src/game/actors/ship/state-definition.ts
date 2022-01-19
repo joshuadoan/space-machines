@@ -142,7 +142,8 @@ export let createStateMachineDefinition = (
       Exploring: {
         transitions: {
           ...turnOffEngine,
-          ...recharge
+          ...recharge,
+          ...visit
         }
       },
       "On a trade route": {
