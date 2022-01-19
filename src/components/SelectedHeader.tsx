@@ -20,7 +20,7 @@ export default function ({ selected }: {
           ? " ● "
           : " ◌ ")}
       {selected.visited.length >= Total.TradeRouteDelta && <span>¤</span>}
-      <Tag ship={selected} />
+      <Tag >{selected.state.value.type}</Tag>
       <span> ⚡ {Math.round((100 * selected.fuel) / Total.Fuel)}%</span>
     </header>
   )

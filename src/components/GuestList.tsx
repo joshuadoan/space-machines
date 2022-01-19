@@ -16,7 +16,7 @@ export default function ({ ships }: { ships: Ship[] }) {
             }}
           >{`●`}</span>
           <Link to={`/?ship=${ship.id}`}>{ship.name}</Link>
-          <Tag ship={ship} />
+          <Tag >{ship.state.value.type}</Tag>
           <span>
             {[...new Array(Total.TradeRouteDelta)]
               .map((_, i) => i < ship.visited.length
