@@ -1,5 +1,5 @@
 import React from "react"
-import useGame from "./game/use-game";
+import useGame from "./use-game";
 import SelectedHeader from "./components/SelectedHeader";
 import Diary from "./components/Diary";
 import GuestList from './components/GuestList'
