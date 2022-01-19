@@ -111,6 +111,9 @@ export let createStateMachineDefinition = (
         dimLights(ship);
         if (other instanceof SpaceStation) {
           ship.fuel--;
+        }
+
+        if (ship.visited.length < Total.TradeRouteDelta) {
           logLocation(ship, other.pos);
         }
       }
