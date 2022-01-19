@@ -8,7 +8,7 @@ export default function ({ ships }: { ships: Ship[] }) {
   return (
     <ul>
       {ships.map((ship, i) => (
-        <li key={i} className="flex gap-2 flex-wrap">
+        <li key={i} className="flex gap-2 flex-wrap" >
           <span
             style={{
               color: ship.color.toRGBA(),
@@ -17,8 +17,8 @@ export default function ({ ships }: { ships: Ship[] }) {
           >{`●`}</span>
           <Link to={`/?ship=${ship.id}`}>{ship.name}</Link>
           <Tag >{ship.state.value.type}</Tag>
-          <span> ⚡ {Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
           {ship.visited.length >= Total.TradeRouteDelta ? "●" : "◌"}
+          <span> ⚡ {Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
         </li>
       ))}
     </ul>
