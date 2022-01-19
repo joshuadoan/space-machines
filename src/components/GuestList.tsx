@@ -1,8 +1,8 @@
 import React from "react";
-import { Ship } from "../game/actors/ship/ship";
 import { Link } from "react-router-dom";
-import Tag from "./Tag";
+import { Ship } from "../game/actors/ship/ship";
 import { Total } from "../constants";
+import Tag from "./Tag";
 
 export default function ({ ships }: { ships: Ship[] }) {
   return (
@@ -17,13 +17,8 @@ export default function ({ ships }: { ships: Ship[] }) {
           >{`●`}</span>
           <Link to={`/?ship=${ship.id}`}>{ship.name}</Link>
           <Tag >{ship.state.value.type}</Tag>
-          <span>
-            {[...new Array(Total.TradeRouteDelta)]
-              .map((_, i) => i < ship.visited.length
-                ? " ●"
-                : " ◌")}
-          </span>
-          {ship.visited.length >= Total.TradeRouteDelta && <span>¤</span>}
+          <span> ⚡ {Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
+          {ship.visited.length >= Total.TradeRouteDelta ? "●" : "◌"}
         </li>
       ))}
     </ul>
