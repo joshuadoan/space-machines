@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { createShip, Ship } from "./actors/ship/ship";
-import { createSpaceStation, SpaceStation } from "./actors/space-station/space-station";
-import { Total } from "../constants";
-import { createGame, Game } from "./game";
+import { createShip, Ship } from "./game/actors/ship/ship";
+import { createSpaceStation, SpaceStation } from "./game/actors/space-station/space-station";
+import { Total } from "./constants";
+import { createGame, Game } from "./game/game";
 import { useSearchParams } from "react-router-dom";
-import { addLabel, removeAllLabels, resetCamera, zoomToActor } from "./actors/game-utils";
+import { addLabel, removeAllLabels, resetCamera, zoomToActor } from "./game-utils";
 
 export default function (): [Ship[], Ship | null, SpaceStation[]] {
   let gameReference = useRef<Game>()

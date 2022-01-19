@@ -1,8 +1,8 @@
 import { Actor, Font, FontUnit, Label, vec, Vector } from "excalibur";
 import { nameByRace } from "fantasy-name-generator";
-import { LightsOpacity, ShipSpeed } from "../../constants";
-import { Game } from "../game";
-import { Ship } from "./ship/ship";
+import { LightsOpacity, ShipSpeed } from "./constants";
+import { Game } from "./game/game";
+import { Ship } from "./game/actors/ship/ship";
 
 export function flyTo(ship: Ship, pos: Vector) {
   ship.actions.moveTo(pos, ShipSpeed.Fast);

@@ -14,7 +14,7 @@ import {
   itsBeenAFewSeconds,
   logJournal,
   randomFromArray
-} from "../game-utils";
+} from "../../../game-utils";
 
 export class Ship extends Actor {
   public state: Machine;

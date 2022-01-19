@@ -7,7 +7,7 @@ import {
   logLocation,
   plotTradeRoute,
   getRandomScreenPosition
-} from "../game-utils";
+} from "../../../game-utils";
 import { StateDefinition, StateMachineDefinition } from "./createMachine";
 import { SpaceStation } from "../space-station/space-station";
 import { Total } from "../../../constants";
