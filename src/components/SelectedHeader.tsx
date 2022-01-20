@@ -11,7 +11,7 @@ export default function ({ selected }: {
   return (
     <header className="flex gap-2 flex-wrap items-center">
       <Link to="/" className="pr-2">← back</Link>
-      <Blockies seed={selected.name} size={5} color={selected.color.toRGBA()} />
+      <Blockies seed={selected.name} size={4} color={selected.color.toRGBA()} />
       {selected.name}
       {[...new Array(Total.TradeRouteDelta)]
         .map((_, i) => i < selected!.visited.length
@@ -20,7 +20,7 @@ export default function ({ selected }: {
       {selected.visited.length >= Total.TradeRouteDelta && <span>¤</span>}
       <Tag >{selected.state.value.type}</Tag>
       <span>{Math.round(selected.pos.x)}° {Math.round(selected.pos.y)}°</span>
-      <span> ⚡{Math.round((100 * selected.fuel) / Total.Fuel)}</span>
+      <span>🗲 {Math.round((100 * selected.fuel) / Total.Fuel)}</span>
     </header>
   )
 }
