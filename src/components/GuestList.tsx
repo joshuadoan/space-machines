@@ -8,7 +8,7 @@ export default function ({ ships }: { ships: Ship[] }) {
   return (
     <ul>
       {ships.map((ship, i) => (
-        <li key={i} className="flex gap-2 flex-wrap" >
+        <li key={i} className="flex gap-2 flex-wrap items-center" >
           <span
             style={{
               color: ship.color.toRGBA(),

@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/excaliburjs/template-ts-vite#readme",
   "devDependencies": {
+    "@types/react-blockies": "^1.4.1",
     "@types/react-dom": "^17.0.11",
     "autoprefixer": "^10.4.1",
     "excalibur": "0.26.0-alpha.359",
@@ -38,6 +39,7 @@
     "fantasy-name-generator": "^2.0.0",
     "javascript-time-ago": "^2.3.10",
     "react": "^17.0.2",
+    "react-blockies": "^1.4.1",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.1",
     "windups": "^1.1.9"

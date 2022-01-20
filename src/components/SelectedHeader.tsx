@@ -1,4 +1,5 @@
 import React from "react";
+import Blockies from 'react-blockies';
 import { Link } from "react-router-dom";
 import { Total } from "../constants";
 import { Ship } from "../game/actors/ship/ship";
@@ -8,12 +9,9 @@ export default function ({ selected }: {
   selected: Ship,
 }) {
   return (
-    <header>
+    <header className="flex gap-2 flex-wrap items-center">
       <Link to="/" className="pr-2">← back</Link>
-      <span style={{
-        color: selected.color.toRGBA(),
-        paddingLeft: "0.25rem"
-      }}>{`● `}</span>
+      <Blockies seed={selected.name} size={6} color={selected.color.toRGBA()} />
       {selected.name}
       {[...new Array(Total.TradeRouteDelta)]
         .map((_, i) => i < selected!.visited.length

@@ -4,7 +4,13 @@ export let ShipColors = [
   Color.DarkGray,
   Color.LightGray,
   Color.Azure,
-  Color.Magenta
+  Color.Magenta,
+  Color.Blue,
+  Color.Green,
+  Color.Yellow,
+  Color.Chartreuse,
+  Color.Violet,
+  Color.Rose
 ];
 
 export enum Total {
