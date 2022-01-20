@@ -12,7 +12,7 @@ import {
   StateDefinition,
   StateMachineDefinition,
   TransitionDefinition
-} from "./createMachine";
+} from "../../../createMachine";
 import { SpaceStation } from "../space-station/space-station";
 import { Total } from "../../../constants";
 
@@ -66,7 +66,7 @@ export let createStateMachineDefinition = (
     effect(other) {
       stop(ship);
       dimLights(ship);
-      if (other instanceof SpaceStation) {
+      if (other instanceof SpaceStation && ship.fuel > 0) {
         ship.fuel--;
       }
 
@@ -79,7 +79,10 @@ export let createStateMachineDefinition = (
   let Leave: TransitionDefinition = {
     to: { type: "Idle" },
     effect() {
-      ship.fuel--;
+      if (ship.fuel > 0) {
+        ship.fuel--;
+      }
+
       turnOnLights(ship);
     }
   };

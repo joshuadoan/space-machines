@@ -1,5 +1,5 @@
 import { Engine, DisplayMode, Color } from "excalibur";
-import { TransitionDefinition } from "./actors/ship/createMachine";
+import { TransitionDefinition } from "../createMachine";
 
 export class Game extends Engine {
   constructor() {

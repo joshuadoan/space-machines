@@ -1,4 +1,4 @@
-import { ShipStates, ShipTransitions } from "./state-definition";
+import { ShipStates, ShipTransitions } from "./game/actors/ship/state-definition";
 
 export type StateDefinition = {
   type: ShipStates;

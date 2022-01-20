@@ -3,9 +3,9 @@ import useGame from "./use-game";
 import SelectedHeader from "./components/SelectedHeader";
 import Diary from "./components/Diary";
 import GuestList from './components/GuestList'
-
 export let App = () => {
   let [ships, selected, spaceStations] = useGame();
+
   return (
     <>
       {selected

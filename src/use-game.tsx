@@ -42,7 +42,7 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
     gameReference.current = game;
     game.start();
 
-    let interval = setInterval(updateState, 1);
+    let interval = setInterval(updateState, 100);
     return () => clearInterval(interval);
   }, [])
 

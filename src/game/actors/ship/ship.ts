@@ -7,7 +7,7 @@ import {
 } from "../../../constants";
 import { SpaceStation } from "../space-station/space-station";
 import { createStateMachineDefinition } from "./state-definition";
-import { createMachine, Machine } from "./createMachine";
+import { createMachine, Machine } from "../../../createMachine";
 import {
   generateName,
   getRandomScreenPosition,
@@ -21,7 +21,7 @@ export class Ship extends Actor {
   public visited: Vector[];
   public journal: JournalEntry[];
   public selected: boolean;
-  public fuel: number;
+  public fuel: number = 100;
 }
 
 export type JournalEntry = {
