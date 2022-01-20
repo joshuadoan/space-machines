@@ -11,7 +11,7 @@ import {
 import {
   StateDefinition,
   StateMachineDefinition,
-  Transitions
+  TransitionDefinition
 } from "./createMachine";
 import { SpaceStation } from "../space-station/space-station";
 import { Total } from "../../../constants";
@@ -45,78 +45,64 @@ export let createStateMachineDefinition = (
   ship: Ship,
   initialState: StateDefinition
 ): StateMachineDefinition => {
-  let turnOnEngine: Transitions = {
-    "Turn on engine": {
-      to: { type: "Idle" },
-      effect() {
-        turnOnLights(ship);
-      }
+  let TurnOffEngine: TransitionDefinition = {
+    to: { type: "Off" },
+    effect() {
+      stop(ship);
+      dimLights(ship);
     }
   };
 
-  let leave: Transitions = {
-    Leave: {
-      to: { type: "Idle" },
-      effect() {
+  let Recharge: TransitionDefinition = {
+    to: { type: "Off" },
+    effect() {
+      ship.fuel = Total.Fuel;
+      ship.visited = [];
+    }
+  };
+
+  let Visit: TransitionDefinition = {
+    to: { type: "Visiting" },
+    effect(other) {
+      stop(ship);
+      dimLights(ship);
+      if (other instanceof SpaceStation) {
         ship.fuel--;
-        turnOnLights(ship);
+      }
+
+      if (ship.visited.length < Total.TradeRouteDelta) {
+        logLocation(ship, other.pos);
       }
     }
   };
 
-  let flyToRandomPlace: Transitions = {
-    "Fly to random point": {
-      to: { type: "Exploring" },
-      effect() {
-        let pos = getRandomScreenPosition(ship);
-        flyTo(ship, pos);
-      }
+  let Leave: TransitionDefinition = {
+    to: { type: "Idle" },
+    effect() {
+      ship.fuel--;
+      turnOnLights(ship);
     }
   };
 
-  let startTradeRoute: Transitions = {
-    "Begin route": {
-      to: { type: "On a trade route" },
-      effect() {
-        plotTradeRoute(ship);
-      }
+  let TurnOnEngine: TransitionDefinition = {
+    to: { type: "Idle" },
+    effect() {
+      turnOnLights(ship);
     }
   };
 
-  let turnOffEngine: Transitions = {
-    "Turn Off engine": {
-      to: { type: "Off" },
-      effect() {
-        stop(ship);
-        dimLights(ship);
-      }
+  let FlyToRandomPoint: TransitionDefinition = {
+    to: { type: "Exploring" },
+    effect() {
+      let pos = getRandomScreenPosition(ship);
+      flyTo(ship, pos);
     }
   };
 
-  let recharge: Transitions = {
-    Recharge: {
-      to: { type: "Off" },
-      effect() {
-        ship.fuel = Total.Fuel;
-        ship.visited = [];
-      }
-    }
-  };
-
-  let visit: Transitions = {
-    Visit: {
-      to: { type: "Visiting" },
-      effect(other) {
-        stop(ship);
-        dimLights(ship);
-        if (other instanceof SpaceStation) {
-          ship.fuel--;
-        }
-
-        if (ship.visited.length < Total.TradeRouteDelta) {
-          logLocation(ship, other.pos);
-        }
-      }
+  let BeginRoute: TransitionDefinition = {
+    to: { type: "On a trade route" },
+    effect() {
+      plotTradeRoute(ship);
     }
   };
 
@@ -125,31 +111,31 @@ export let createStateMachineDefinition = (
     states: {
       Off: {
         transitions: {
-          ...turnOnEngine
+          "Turn on engine": TurnOnEngine
         }
       },
       Visiting: {
         transitions: {
-          ...leave
+          Leave
         }
       },
       Idle: {
         transitions: {
-          ...flyToRandomPlace,
-          ...startTradeRoute
+          "Fly to random point": FlyToRandomPoint,
+          "Begin route": BeginRoute
         }
       },
       Exploring: {
         transitions: {
-          ...turnOffEngine,
-          ...recharge,
-          ...visit
+          "Turn Off engine": TurnOffEngine,
+          Recharge,
+          Visit
         }
       },
       "On a trade route": {
         transitions: {
-          ...visit,
-          ...recharge
+          Visit,
+          Recharge
         }
       }
     }

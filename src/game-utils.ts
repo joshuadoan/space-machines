@@ -8,6 +8,10 @@ export function flyTo(ship: Ship, pos: Vector) {
   ship.actions.moveTo(pos, ShipSpeed.Fast);
 }
 
+export function getSnack() {
+  return randomFromArray(["🍎", "🍊", "🍈", "🥝", "🥐", "🍞", "🍲", "🍪"]);
+}
+
 export function getRandomScreenPosition(ship: Ship) {
   return vec(
     Math.floor(

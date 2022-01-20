@@ -11,9 +11,9 @@ import { createMachine, Machine } from "./createMachine";
 import {
   generateName,
   getRandomScreenPosition,
+  getSnack,
   itsBeenAFewSeconds,
-  logJournal,
-  randomFromArray
+  logJournal
 } from "../../../game-utils";
 
 export class Ship extends Actor {
@@ -92,19 +92,7 @@ export let createShip = () => {
         transition(value, "Fly to random point");
         break;
       case "Exploring":
-        logJournal(
-          ship,
-          `⭐ Stopped to eat a snack ${randomFromArray([
-            "🍎",
-            "🍊",
-            "🍈",
-            "🥝",
-            "🥐",
-            "🍞",
-            "🍲",
-            "🍪"
-          ])}`
-        );
+        logJournal(ship, `⭐ Stopped to eat a snack ${getSnack()}`);
         transition(value, "Turn Off engine");
         break;
     }
