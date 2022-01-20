@@ -17,7 +17,7 @@ export default function ({ ships }: { ships: Ship[] }) {
           >{`●`}</span>
           <Link to={`/?ship=${ship.id}`}>{ship.name}</Link>
           <Tag >{ship.state.value.type}</Tag>
-          {ship.visited.length >= Total.TradeRouteDelta / 2 ? "●" : ship.visited.length > Total.TradeRouteDelta / 4 ? "◐" : "◌"}
+          {ship.visited.length >= Total.TradeRouteDelta ? "●" : ship.visited.length > Total.TradeRouteDelta / 2 ? "◐" : "◌"}
           <span> ⚡ {Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
         </li>
       ))}
