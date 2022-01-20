@@ -10,8 +10,12 @@ export function flyTo(ship: Ship, pos: Vector) {
 
 export function getRandomScreenPosition(ship: Ship) {
   return vec(
-    Math.floor(Math.random() * ship.scene.engine.drawWidth),
-    Math.floor(Math.random() * ship.scene.engine.drawHeight)
+    Math.floor(
+      Math.random() * ship.scene.engine.drawWidth * ship.scene.camera.zoom
+    ),
+    Math.floor(
+      Math.random() * ship.scene.engine.drawHeight * ship.scene.camera.zoom
+    )
   );
 }
 
