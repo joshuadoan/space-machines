@@ -17,21 +17,21 @@ export let App = () => {
       {selected
         ? <SelectedHeader selected={selected} />
         : <header className="flex items-center gap-6">
-          <Link to={`/?filter=`} className={filter === "" ? "active" : ""}>○</Link>
+          <Link to={`/`} className={!filter ? "active" : ""}>○</Link>
           <Link to={`/?filter=◐`} className={filter === "◐" ? "active" : ""}>◐</Link>
           <Link to={`/?filter=●`} className={filter === "●" ? "active" : ""}>●</Link>
           <span>🚀 {filteredShips.length}</span>
           <span>🪐 {spaceStations.length}</span>
         </header>}
       <main>
-        <aside>
+        <aside className="w-80">
           {
             selected
               ? <Diary selected={selected} />
               : <GuestList ships={filteredShips} />
           }
         </aside>
-        <section className="w-[50%] sm:w-[70%]">
+        <section className="flex-1">
           <canvas id="game"></canvas>
         </section>
       </main>

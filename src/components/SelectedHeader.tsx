@@ -10,8 +10,12 @@ export default function ({ selected }: {
 }) {
   return (
     <header className="flex gap-2 flex-wrap items-center">
-      <Link to="/" className="pr-2">← back</Link>
-      <Blockies seed={selected.name} size={4} color={selected.color.toRGBA()} />
+      <Link to="/" className="pr-2">←</Link>
+      <Blockies
+        className="blockie"
+        seed={selected.name}
+        size={8}
+        color={selected.color.toRGBA()} />
       {selected.name}
       {[...new Array(Total.TradeRouteDelta)]
         .map((_, i) => i < selected!.visited.length

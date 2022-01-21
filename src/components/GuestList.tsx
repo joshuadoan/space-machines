@@ -24,7 +24,7 @@ export default function ({ ships }: { ships: Ship[] }) {
             {
               ship.visited.length >= Total.TradeRouteDelta
                 ? " ●"
-                : ship.visited.length > 0
+                : ship.visited.length > Total.TradeRouteDelta
                   ? " ◐"
                   : " ◌"
             }

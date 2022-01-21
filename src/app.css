@@ -34,7 +34,7 @@ main {
 
 aside {
   overflow-y: auto;
-  flex: 1;
+  /* flex: 1; */
   margin: 0;
   padding: 0rem 1rem;
   box-sizing: border-box;
@@ -67,6 +67,11 @@ header a {
   background: orange;
   padding: 0.2rem 0.5rem;
   transition: background-color 1000ms linear;
+}
+
+.blockie {
+  border: 1px solid orange;
+  border-radius: 50%;
 }
 
 header .active {
