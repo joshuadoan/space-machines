@@ -58,25 +58,27 @@ li {
   gap: 0 0.5rem;
 }
 
-p {
-  font-size: 2.5em;
-  text-align: center;
-  margin-top: 5em;
-}
-
-a {
+header a {
   text-decoration: underline;
+  border: 1px solid orange;
+  color: black;
+  background: orange;
+  padding: 0.2rem 0.5rem;
+  transition: background-color 1000ms linear;
 }
 
-a.active {
-  -webkit-animation-name: wiggle;
-  -ms-animation-name: wiggle;
-  -ms-animation-duration: 5000ms;
-  -webkit-animation-duration: 5000ms;
-  -webkit-animation-iteration-count: 1;
-  -ms-animation-iteration-count: 1;
-  -webkit-animation-timing-function: ease-in-out;
-  -ms-animation-timing-function: ease-in-out;
+header .active {
+  text-decoration: none;
+  cursor: default;
+  border: 1px solid orange;
+  background: rgb(19, 19, 19);
+  color: orange;
+  padding: 0.2rem 0.5rem;
+  animation-name: wiggle;
+  animation-name: wiggle;
+  animation-duration: 5000ms;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
 }
 
 @-webkit-keyframes wiggle {
