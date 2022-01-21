@@ -17,7 +17,7 @@ export let App = () => {
       {selected
         ? <SelectedHeader selected={selected} />
         : <header className="flex items-center gap-6">
-          <Link to={`/?filter=◌`} className={filter === "◌" ? "active" : ""}>◌</Link>
+          <Link to={`/?filter=◌`} className={filter === "○" ? "active" : ""}>○</Link>
           <Link to={`/?filter=◐`} className={filter === "◐" ? "active" : ""}>◐</Link>
           <Link to={`/?filter=●`} className={filter === "●" ? "active" : ""}>●</Link>
           <span>🚀 {filteredShips.length}</span>
