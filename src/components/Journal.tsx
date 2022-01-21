@@ -13,7 +13,7 @@ export default function ({ selected }: {
   let journal = selected?.journal || [];
   let [first, ...rest] = journal;
   return (
-    <ul>
+    <ul className="py-2">
       <li><WindupChildren>{first.message}.</WindupChildren></li>
       {
         rest.map(({ at, message }, i) => (

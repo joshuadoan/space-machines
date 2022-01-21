@@ -1,7 +1,7 @@
 import React from "react"
 import useGame from "./hooks/use-game";
 import SelectedHeader from "./components/SelectedHeader";
-import Diary from "./components/Diary";
+import Diary from "./components/Journal";
 import GuestList from './components/GuestList'
 import { Link, useSearchParams } from "react-router-dom";
 import { filterByRoutes } from "./game-utils";
