@@ -71,8 +71,8 @@ a {
 a.active {
   -webkit-animation-name: wiggle;
   -ms-animation-name: wiggle;
-  -ms-animation-duration: 3000ms;
-  -webkit-animation-duration: 3000ms;
+  -ms-animation-duration: 5000ms;
+  -webkit-animation-duration: 5000ms;
   -webkit-animation-iteration-count: 1;
   -ms-animation-iteration-count: 1;
   -webkit-animation-timing-function: ease-in-out;
