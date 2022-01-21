@@ -4,7 +4,6 @@ import SelectedHeader from "./components/SelectedHeader";
 import Diary from "./components/Diary";
 import GuestList from './components/GuestList'
 import { Link, useSearchParams } from "react-router-dom";
-import { Total } from "./constants";
 import { filterByRoutes } from "./game-utils";
 
 export let App = () => {
