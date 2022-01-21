@@ -23,7 +23,7 @@ export default function ({ ships }: { ships: Ship[] }) {
               <Tag >{ship.state.value.type}</Tag>
             </section>
             <section>
-              <span>⚡ {Math.round((100 * ship.fuel || 1) / Total.Fuel)}%</span>
+              <span>⚡{Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
               {[...new Array(Total.TradeRouteDelta)]
                 .map((_, i) => i < ship.visited.length
                   ? " ● "
