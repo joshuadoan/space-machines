@@ -58,8 +58,10 @@ li {
   gap: 0 0.5rem;
 }
 
-header a {
+a {
   text-decoration: underline;
+}
+header a {
   border: 1px solid orange;
   color: black;
   background: orange;

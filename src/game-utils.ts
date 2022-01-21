@@ -72,7 +72,7 @@ export function plotTradeRoute(ship: Ship) {
 export function filterByRoutes(ship: Ship, filter: string | null) {
   switch (filter) {
     case "●":
-      return ship.visited.length >= Total.TradeRouteDelta;
+      return ship.visited.length >= Total.TradeRouteDelta / 2;
     case "◐":
       return ship.visited.length > 0;
     default:
