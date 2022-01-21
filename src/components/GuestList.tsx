@@ -1,25 +1,13 @@
 import React from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Ship } from "../game/actors/ship/ship";
 import { Total } from "../constants";
 import Tag from "./Tag";
 
 export default function ({ ships }: { ships: Ship[] }) {
-  let [searchParams] = useSearchParams();
-  let filter = searchParams.get("filter");
   return (
     <ul>
-      {ships.filter(ship => {
-        switch (filter) {
-          case "●":
-            return ship.visited.length >= Total.TradeRouteDelta;
-          case "◐":
-            return ship.visited.length > 0;
-          default:
-            return true
-        }
-
-      }).map((ship, i) => (
+      {ships.map((ship, i) => (
         <li key={i} className="flex flex-wrap flex-col">
           <section className="flex gap-x-2  items-center">
             <span

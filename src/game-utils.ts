@@ -1,6 +1,6 @@
 import { Actor, Font, FontUnit, Label, vec, Vector } from "excalibur";
 import { nameByRace } from "fantasy-name-generator";
-import { LightsOpacity, ShipSpeed } from "./constants";
+import { LightsOpacity, ShipSpeed, Total } from "./constants";
 import { Game } from "./game/game";
 import { Ship } from "./game/actors/ship/ship";
 
@@ -67,6 +67,17 @@ export function plotTradeRoute(ship: Ship) {
   ship.visited.forEach((pos) => {
     ship.actions.moveTo(pos, ShipSpeed.Medium);
   });
+}
+
+export function filterByRoutes(ship: Ship, filter: string | null) {
+  switch (filter) {
+    case "●":
+      return ship.visited.length >= Total.TradeRouteDelta;
+    case "◐":
+      return ship.visited.length > 0;
+    default:
+      return true;
+  }
 }
 
 export function hasReachedDestination(ship: Ship) {
