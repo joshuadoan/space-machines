@@ -13,7 +13,8 @@ import {
   getRandomScreenPosition,
   getSnack,
   itsBeenAFewSeconds,
-  logJournal
+  logJournal,
+  randomFromArray
 } from "../../../game-utils";
 
 export class Ship extends Actor {
@@ -73,9 +74,17 @@ export let createShip = () => {
 
     switch (value.type) {
       case "Off":
+        let { lastName } = generateName();
         logJournal(
           ship,
-          "⭐ Turned on the engine. Stared at the map for a bit"
+          `⭐ ${randomFromArray([
+            "Turned on the engine. Stared at the map for a bit",
+            "Stared out the window for a bit. The stars. The darkness. " +
+              `Something was different now. ${lastName} was gone forever. ` +
+              "Nothing will bring it back. Not even revenge...But it will be" +
+              "fun trying ",
+            "Fell sleep a the wheel for minute. They dreamed."
+          ])}`
         );
         transition(value, "Turn on engine");
         break;
@@ -88,11 +97,32 @@ export let createShip = () => {
           transition(value, "Begin route");
           break;
         }
-        logJournal(ship, "🚀  Explored the great unknown");
+        logJournal(
+          ship,
+          `🚀 ${randomFromArray([
+            "Explored the great unknown",
+            "Thought about direction. Wondered why they hadn't before",
+            "Never meant to travel so much. A trucker's life. To have such a " +
+              "lonely spouse",
+            `Put on some tunes. Leaned the seat back. They thought "This is the life"`
+          ])}`
+        );
         transition(value, "Fly to random point");
         break;
       case "Exploring":
-        logJournal(ship, `⭐ Stopped to eat a snack ${getSnack()}`);
+        logJournal(
+          ship,
+          `⭐ ${randomFromArray([
+            `Stopped to eat a snack ${getSnack()}`,
+            `${
+              ship.visited.length < 1
+                ? "Wondered where all the space stations are around here"
+                : `Has discovered ${ship.visited.length} space stations`
+            }`,
+            "Thought about time and space. Freaked out. Pulled over",
+            "Pulled over to make sure the glibulator wasn't fumbilating"
+          ])}`
+        );
         transition(value, "Turn Off engine");
         break;
     }
