@@ -1,5 +1,5 @@
 import React from "react"
-import useGame from "./use-game";
+import useGame from "./hooks/use-game";
 import SelectedHeader from "./components/SelectedHeader";
 import Diary from "./components/Diary";
 import GuestList from './components/GuestList'
@@ -23,8 +23,8 @@ export let App = () => {
           <span>🚀 {filteredShips.length}</span>
           <span>🪐 {spaceStations.length}</span>
         </header>}
-      <main>
-        <aside className="w-80">
+      <main className="flex-col md:flex-row">
+        <aside className="md:w-96 h-64 md:h-full">
           {
             selected
               ? <Diary selected={selected} />

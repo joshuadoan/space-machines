@@ -1,14 +1,16 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { createShip, Ship } from "./game/actors/ship/ship";
-import { createSpaceStation, SpaceStation } from "./game/actors/space-station/space-station";
-import { Total } from "./constants";
-import { createGame, Game } from "./game/game";
+import { useLayoutEffect, useRef, useState } from "react";
+import { createShip, Ship } from "../game/actors/ship/ship";
+import { createSpaceStation, SpaceStation } from "../game/actors/space-station/space-station";
+import { Total } from "../constants";
+import { createGame, Game } from "../game/game";
 import { useSearchParams } from "react-router-dom";
-import { addLabel, removeAllLabels, resetCamera, zoomToActor } from "./game-utils";
+import { addLabel, removeAllLabels, resetCamera, zoomToActor } from "../game-utils";
+import useWindowSize, { WindowSize } from "./useWindowSize";
 
 export default function (): [Ship[], Ship | null, SpaceStation[]] {
   let gameReference = useRef<Game>()
   let [searchParams] = useSearchParams();
+  const windowSize: WindowSize = useWindowSize();
 
   let id = searchParams.get("ship");
 
@@ -27,7 +29,7 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
     setSpaceStations(spaceStationsOnCanvas as SpaceStation[])
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let game: Game = createGame();
     [...Array(Total.SpaceStations)].map(() => {
       let spaceStation = createSpaceStation(game);
@@ -44,7 +46,7 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
 
     let interval = setInterval(updateState, 100);
     return () => clearInterval(interval);
-  }, [])
+  }, [windowSize])
 
   useLayoutEffect(() => {
     let game = gameReference.current;
