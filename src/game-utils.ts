@@ -124,7 +124,7 @@ export function itsBeenAFewSeconds(timeStarted?: Date) {
   if (!timeStarted) return false;
   let now = new Date().getTime();
   let timeDiff = now - timeStarted.getTime();
-  let seconds = Math.floor(Math.random() * 1000);
+  let seconds = Math.floor(Math.random() * 5000);
 
   return timeDiff > seconds * 1000;
 }
