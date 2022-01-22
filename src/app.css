@@ -60,8 +60,9 @@ li {
 
 a {
   text-decoration: underline;
+  cursor: pointer;
 }
-header a {
+nav a {
   border: 1px solid orange;
   color: black;
   background: orange;
@@ -69,7 +70,7 @@ header a {
   transition: all 0.2s ease-in-out, background-color 1000ms linear;
 }
 
-header a[aria-selected="true"] {
+nav a[aria-selected="true"] {
   text-decoration: none;
   cursor: default;
   border: 1px solid orange;
@@ -78,7 +79,7 @@ header a[aria-selected="true"] {
   padding: 0.2rem 0.5rem;
 }
 
-header a:hover {
+nav a:hover {
   transform: scale(1.1);
 }
 

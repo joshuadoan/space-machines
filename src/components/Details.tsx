@@ -1,31 +1,22 @@
 import React from "react";
-import Blockies from 'react-blockies';
 import { Link } from "react-router-dom";
 import { Total } from "../constants";
 import { Ship } from "../game/actors/ship/ship";
+import Avatar from "./Avatar";
 import Tag from "./Tag";
+import Visited from "./Visited";
 
-export default function ({ selected }: {
-  selected: Ship,
-}) {
-  // console.log(Object.entries(selected.snack).map(foo => foo))
+export default function ({ ship }: { ship: Ship }) {
   return (
     <>
       <Link to="/" className="pr-2">←</Link>
-      <Blockies
-        className="blockie"
-        seed={selected.name}
-        size={8}
-        color={selected.color.toRGBA()} />
-      {selected.name}
-      {[...new Array(Total.TradeRouteDelta)]
-        .map((_, i) => i < selected!.visited.length
-          ? " ● "
-          : " ◌ ")}
-      {selected.visited.length >= Total.TradeRouteDelta && <span>¤</span>}
-      <Tag >{selected.state.value.type}</Tag>
-      <span>{Math.round(selected.pos.x)}° {Math.round(selected.pos.y)}°</span>
-      <span>⚡ {Math.round((100 * selected.fuel) / Total.Fuel)}%</span>
+      <Avatar name={ship.name} color={ship.color} />
+      {ship.name}
+      <Visited ship={ship} />
+      {ship.visited.length >= Total.TradeRouteDelta && <span>¤</span>}
+      <Tag >{ship.state.value.type}</Tag>
+      <span>{Math.round(ship.pos.x)}° {Math.round(ship.pos.y)}°</span>
+      <span>⚡ {Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
     </>
   )
 }

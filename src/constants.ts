@@ -14,7 +14,7 @@ export let ShipColors = [
 ];
 
 export let FactionColors = [
-  Color.Green,
+  Color.Viridian,
   Color.LightGray,
   Color.Azure,
   Color.Magenta
