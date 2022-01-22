@@ -24,7 +24,7 @@ export default function ({ selected }: {
       {selected.visited.length >= Total.TradeRouteDelta && <span>¤</span>}
       <Tag >{selected.state.value.type}</Tag>
       <span>{Math.round(selected.pos.x)}° {Math.round(selected.pos.y)}°</span>
-      <span>⚡ {Math.round((100 * selected.fuel) / Total.Fuel)}</span>
+      <span>⚡ {Math.round((100 * selected.fuel) / Total.Fuel)}%</span>
     </header>
   )
 }

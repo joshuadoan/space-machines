@@ -69,7 +69,8 @@ export function plotTradeRoute(ship: Ship) {
   });
 }
 
-export function sortShips(a: Ship, b: Ship, filter: string | null) {
+export type SortKeys = "◐" | "⚡" | null;
+export function sortShips(a: Ship, b: Ship, filter: SortKeys) {
   if (filter === "◐" && a.visited.length > b.visited.length) {
     return -1;
   }

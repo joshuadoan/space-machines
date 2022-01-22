@@ -26,7 +26,6 @@ export default function ({ ships }: { ships: Ship[] }) {
               </section>
               <section>
                 <span>⚡ {Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
-                <span>⚡ {ship.fuel}%</span>
                 {[...new Array(Total.TradeRouteDelta)]
                   .map((_, i) => i < ship.visited.length
                     ? " ● "

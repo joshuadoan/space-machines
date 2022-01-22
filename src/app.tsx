@@ -1,19 +1,20 @@
 import React from "react"
 import useGame from "./hooks/use-game";
 import SelectedHeader from "./components/SelectedHeader";
-import Diary from "./components/Journal";
+import Journal from "./components/Journal";
 import GuestList from './components/GuestList'
 import { Link, useSearchParams } from "react-router-dom";
-import { sortShips } from "./game-utils";
+import { SortKeys, sortShips } from "./game-utils";
 
 export let App = () => {
   let [ships, selected, spaceStations] = useGame();
   let [searchParams] = useSearchParams();
-  let sort = searchParams.get("sort");
+
+  let sort = searchParams.get("sort") as SortKeys;
   let filteredShips = ships.sort((a, b) => sortShips(a, b, sort))
 
   return (
-    <section className="flex flex-col-reverse md:flex-col">
+    <section >
       {
         selected
           ? <SelectedHeader selected={selected} />
@@ -29,7 +30,7 @@ export let App = () => {
         <aside className="md:w-96 h-64 md:h-full">
           {
             selected
-              ? <Diary selected={selected} />
+              ? <Journal selected={selected} />
               : <GuestList ships={filteredShips} />
           }
         </aside>
