@@ -13,7 +13,7 @@ export let App = () => {
   let filteredShips = ships.filter(s => filterByRoutes(s, filter))
 
   return (
-    <>
+    <section className="flex flex-col-reverse md:flex-col">
       {selected
         ? <SelectedHeader selected={selected} />
         : <header className="flex items-center gap-6">
@@ -23,7 +23,7 @@ export let App = () => {
           <span>🚀 {filteredShips.length}</span>
           <span>🪐 {spaceStations.length}</span>
         </header>}
-      <main className="flex-col md:flex-row">
+      <main className="flex-col-reverse md:flex-row">
         <aside className="md:w-96 h-64 md:h-full">
           {
             selected
@@ -35,6 +35,6 @@ export let App = () => {
           <canvas id="game"></canvas>
         </section>
       </main>
-    </>
+    </section>
   )
 }
