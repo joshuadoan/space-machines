@@ -8,6 +8,7 @@ import Tag from "./Tag";
 export default function ({ selected }: {
   selected: Ship,
 }) {
+  // console.log(Object.entries(selected.snack).map(foo => foo))
   return (
     <>
       <Link to="/" className="pr-2">←</Link>

@@ -22,7 +22,8 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
     let game = gameReference.current;
     if (!game) return
 
-    let shipsOnCanvas = game.currentScene.actors
+    let { actors } = game.currentScene;
+    let shipsOnCanvas = actors
       .filter(a => a instanceof Ship)
       .sort((a, b) => sortShips(a as Ship, b as Ship, sort))
     setShips(shipsOnCanvas as Ship[])

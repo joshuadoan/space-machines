@@ -1,6 +1,6 @@
 import { Actor, Font, FontUnit, Label, vec, Vector } from "excalibur";
 import { nameByRace } from "fantasy-name-generator";
-import { LightsOpacity, ShipSpeed, Total } from "./constants";
+import { LightsOpacity, ShipSpeed } from "./constants";
 import { Game } from "./game/game";
 import { Ship } from "./game/actors/ship/ship";
 
@@ -8,8 +8,10 @@ export function flyTo(ship: Ship, pos: Vector) {
   ship.actions.moveTo(pos, ShipSpeed.Fast);
 }
 
-export function getSnack() {
-  return randomFromArray(["🍎", "🍊", "🍈", "🥝", "🥐", "🍞", "🍲", "🍪"]);
+export function getSnack(ship: Ship) {
+  let snack = randomFromArray(["🍎", "🍊", "🍈", "🥝", "🥐", "🍞", "🍲", "🍪"]);
+  ship.snack[snack] = ship.snack[snack] ? ship.snack[snack]++ : 1;
+  return snack;
 }
 
 export function getRandomScreenPosition(ship: Ship) {
@@ -124,7 +126,7 @@ export function itsBeenAFewSeconds(timeStarted?: Date) {
   if (!timeStarted) return false;
   let now = new Date().getTime();
   let timeDiff = now - timeStarted.getTime();
-  let seconds = Math.floor(Math.random() * 5000);
+  let seconds = Math.floor(Math.random() * 10000);
 
   return timeDiff > seconds * 1000;
 }

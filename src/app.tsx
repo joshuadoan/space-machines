@@ -3,9 +3,12 @@ import useGame from "./hooks/use-game";
 import Details from "./components/Details";
 import Journal from "./components/Journal";
 import GuestList from './components/GuestList'
-import Nav from "./components/Nav";
+import { Link, useSearchParams } from "react-router-dom";
+import { SortKeys } from "./game-utils";
 
 export let App = () => {
+  let [searchParams] = useSearchParams();
+  let sort = searchParams.get("sort") as SortKeys;
   let [ships, selected, spaceStations] = useGame();
 
   return (
@@ -14,11 +17,14 @@ export let App = () => {
         {
           selected
             ? <Details selected={selected} />
-            : <Nav>
-              <span>🚀 {ships.length}</span>
-              <span>🪐 {spaceStations.length}</span>
-            </Nav>
+            : <nav className="flex gap-2">
+              <Link to={`/`} aria-selected={!sort} >○</Link>
+              <Link to={`/?sort=◐`} aria-selected={sort === "◐"}>◐</Link>
+              <Link to={`/?sort=⚡`} aria-selected={sort === "⚡"}>⚡</Link>
+            </nav>
         }
+        <span>🚀 {ships.length}</span>
+        <span>🪐 {spaceStations.length}</span>
       </header>
       <main className="flex-col md:flex-row">
         <aside className="md:w-96 h-64 md:h-full">

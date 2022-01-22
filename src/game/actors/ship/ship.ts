@@ -18,6 +18,7 @@ export class Ship extends Actor {
   public journal: JournalEntry[];
   public selected: boolean;
   public fuel: number = 100;
+  public snack: any = {};
 }
 
 export type JournalEntry = {
@@ -99,7 +100,14 @@ export let createShip = ({ color }: ShipOptions) => {
         logJournal(
           ship,
           `⭐ ${randomFromArray([
-            `Stopped to eat a snack ${getSnack()}`,
+            `Favorite foods ${
+              Object.entries(ship.snack).length
+                ? Object.entries(ship.snack).map(
+                    ([food, count]) => ` ${food} ${count} `
+                  )
+                : "Was hungry"
+            }`,
+            `Stopped to eat a snack ${getSnack(ship)}`,
             `${
               ship.visited.length < 1
                 ? "Wondered where all the space stations are around here"
