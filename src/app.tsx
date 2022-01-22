@@ -1,10 +1,11 @@
 import React from "react"
 import useGame from "./hooks/use-game";
-import SelectedHeader from "./components/SelectedHeader";
+import SelectedHeader from "./components/Details";
 import Journal from "./components/Journal";
 import GuestList from './components/GuestList'
-import { Link, useSearchParams } from "react-router-dom";
-import { SortKeys, sortShips } from "./game-utils";
+import { Link, Route, Routes, useSearchParams } from "react-router-dom";
+import { generateName, SortKeys, sortShips } from "./game-utils";
+import { Color } from "excalibur";
 
 export let App = () => {
   let [ships, selected, spaceStations] = useGame();
@@ -15,17 +16,19 @@ export let App = () => {
 
   return (
     <section >
-      {
-        selected
-          ? <SelectedHeader selected={selected} />
-          : <header className="flex items-center gap-6">
-            <Link to={`/`} className={!sort ? "active" : ""}>○</Link>
-            <Link to={`/?sort=◐`} className={sort === "◐" ? "active" : ""}>◐</Link>
-            <Link to={`/?sort=⚡`} className={sort === "⚡" ? "active" : ""}>⚡</Link>
-            <span>🚀 {filteredShips.length}</span>
-            <span>🪐 {spaceStations.length}</span>
-          </header>
-      }
+      <header className="flex items-center gap-6">
+        {
+          selected
+            ? <SelectedHeader selected={selected} />
+            : <>
+              <Link to={`/`} aria-selected={!sort} >○</Link>
+              <Link to={`/?sort=◐`} aria-selected={sort === "◐"}>◐</Link>
+              <Link to={`/?sort=⚡`} aria-selected={sort === "⚡"}>⚡</Link>
+              <span>🚀 {filteredShips.length}</span>
+              <span>🪐 {spaceStations.length}</span>
+            </>
+        }
+      </header>
       <main className="flex-col-reverse md:flex-row">
         <aside className="md:w-96 h-64 md:h-full">
           {
@@ -38,6 +41,6 @@ export let App = () => {
           <canvas id="game"></canvas>
         </section>
       </main>
-    </section>
+    </section >
   )
 }

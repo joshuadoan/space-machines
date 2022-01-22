@@ -69,6 +69,15 @@ header a {
   transition: all 0.2s ease-in-out, background-color 1000ms linear;
 }
 
+header a[aria-selected="true"] {
+  text-decoration: none;
+  cursor: default;
+  border: 1px solid orange;
+  background: rgb(19, 19, 19);
+  color: orange;
+  padding: 0.2rem 0.5rem;
+}
+
 header a:hover {
   transform: scale(1.1);
 }
@@ -76,13 +85,4 @@ header a:hover {
 .blockie {
   border: 1px solid orange;
   border-radius: 50%;
-}
-
-header a.active {
-  text-decoration: none;
-  cursor: default;
-  border: 1px solid orange;
-  background: rgb(19, 19, 19);
-  color: orange;
-  padding: 0.2rem 0.5rem;
 }

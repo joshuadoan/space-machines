@@ -1,16 +1,16 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createShip, Ship } from "../game/actors/ship/ship";
 import { createSpaceStation, SpaceStation } from "../game/actors/space-station/space-station";
-import { Total } from "../constants";
+import { FactionColors, ShipColors, Total } from "../constants";
 import { createGame, Game } from "../game/game";
 import { useSearchParams } from "react-router-dom";
-import { addLabel, removeAllLabels, resetCamera, zoomToActor } from "../game-utils";
-import useWindowSize, { WindowSize } from "./useWindowSize";
+import { addLabel, generateName, getRandomScreenPosition, removeAllLabels, resetCamera, zoomToActor } from "../game-utils";
+import useWindowSize from "./useWindowSize";
 
 export default function (): [Ship[], Ship | null, SpaceStation[]] {
   let gameReference = useRef<Game>()
   let [searchParams] = useSearchParams();
-  const windowSize: WindowSize = useWindowSize();
+  let windowSize = useWindowSize();
 
   let id = searchParams.get("ship");
 
@@ -31,15 +31,22 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
 
   useEffect(() => {
     let game: Game = createGame();
-    [...Array(Total.SpaceStations)].map(() => {
+
+    [...Array(Total.SpaceStations)].forEach(() => {
       let spaceStation = createSpaceStation(game);
       game.add(spaceStation)
     });
 
-    [...Array(Total.Ships)].map(() => {
-      let ship = createShip();
-      game.add(ship);
-    });
+    FactionColors.forEach(color => {
+      [...Array(Total.Ships)].forEach(() => {
+        let ship = createShip({
+          color,
+        });
+        ship.color = color;
+        game.add(ship);
+      })
+    })
+
 
     gameReference.current = game;
     game.start();

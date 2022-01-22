@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Vector } from "excalibur";
+import { Actor, CollisionType, Color, Vector } from "excalibur";
 import {
   LightsOpacity,
   ShipColors,
@@ -30,13 +30,16 @@ export type JournalEntry = {
   message: string;
 };
 
-export let createShip = () => {
+export type ShipOptions = { color: Color };
+
+export let createShip = ({ color }: ShipOptions) => {
   let { firstName, lastName } = generateName();
 
   let ship = new Ship({
-    color: ShipColors[Math.floor(Math.random() * ShipColors.length)],
+    // color: ShipColors[Math.floor(Math.random() * ShipColors.length)],
     name: `${firstName} ${lastName}`,
-    radius: ShipSizes.Small
+    radius: ShipSizes.Small,
+    color
   });
 
   let stateDefinition = createStateMachineDefinition(ship, {

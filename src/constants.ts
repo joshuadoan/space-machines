@@ -13,10 +13,17 @@ export let ShipColors = [
   Color.Rose
 ];
 
+export let FactionColors = [
+  Color.DarkGray,
+  Color.LightGray,
+  Color.Azure,
+  Color.Magenta
+];
+
 export enum Total {
   SpaceStations = 24,
   TradeRouteDelta = Math.floor(Total.SpaceStations * 0.2),
-  Ships = 64,
+  Ships = 16,
   Fuel = 214
 }
 
