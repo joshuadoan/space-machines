@@ -9,7 +9,7 @@ export default function ({ selected }: {
   selected: Ship,
 }) {
   return (
-    <header className="flex gap-2 flex-wrap items-center">
+    <>
       <Link to="/" className="pr-2">←</Link>
       <Blockies
         className="blockie"
@@ -25,6 +25,6 @@ export default function ({ selected }: {
       <Tag >{selected.state.value.type}</Tag>
       <span>{Math.round(selected.pos.x)}° {Math.round(selected.pos.y)}°</span>
       <span>⚡ {Math.round((100 * selected.fuel) / Total.Fuel)}%</span>
-    </header>
+    </>
   )
 }

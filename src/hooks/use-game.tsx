@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createShip, Ship } from "../game/actors/ship/ship";
 import { createSpaceStation, SpaceStation } from "../game/actors/space-station/space-station";
-import { FactionColors, ShipColors, Total } from "../constants";
+import { FactionColors, Total } from "../constants";
 import { createGame, Game } from "../game/game";
 import { useSearchParams } from "react-router-dom";
-import { addLabel, generateName, getRandomScreenPosition, removeAllLabels, resetCamera, zoomToActor } from "../game-utils";
+import { addLabel, removeAllLabels, resetCamera, zoomToActor } from "../game-utils";
 import useWindowSize from "./useWindowSize";
 
 export default function (): [Ship[], Ship | null, SpaceStation[]] {

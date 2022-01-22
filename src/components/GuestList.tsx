@@ -1,4 +1,5 @@
 import React from "react";
+import Blockies from 'react-blockies';
 import { Link, useSearchParams } from "react-router-dom";
 import { Ship } from "../game/actors/ship/ship";
 import { Total } from "../constants";
@@ -15,12 +16,11 @@ export default function ({ ships }: { ships: Ship[] }) {
           return (
             <li key={i} className="flex flex-wrap flex-col">
               <section className="flex gap-x-2  items-center">
-                <span
-                  style={{
-                    color: ship.color.toRGBA(),
-                    fontSize: "1.5rem"
-                  }}
-                >{"●"}</span>
+                <Blockies
+                  className="blockie"
+                  seed={ship.name}
+                  size={4}
+                  color={ship.color.toRGBA()} />
                 <Link to={`/?ship=${ship.id}`}>{ship.name}</Link>
                 <Tag >{ship.state.value.type}</Tag>
               </section>

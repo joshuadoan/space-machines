@@ -1,10 +1,5 @@
 import { Actor, CollisionType, Color, Vector } from "excalibur";
-import {
-  LightsOpacity,
-  ShipColors,
-  ShipSizes,
-  Total
-} from "../../../constants";
+import { LightsOpacity, ShipSizes, Total } from "../../../constants";
 import { SpaceStation } from "../space-station/space-station";
 import { createStateMachineDefinition } from "./state-definition";
 import { createMachine, Machine } from "../../../createMachine";
@@ -77,16 +72,10 @@ export let createShip = ({ color }: ShipOptions) => {
 
     switch (value.type) {
       case "Off":
-        let { lastName } = generateName();
         logJournal(
           ship,
           `⭐ ${randomFromArray([
-            "Turned on the engine. Stared at the map for a bit",
-            "Stared out the window for a bit. The stars. The darkness. " +
-              `Something was different now. ${lastName} was gone forever. ` +
-              "Nothing will bring it back. Not even revenge...But it will be " +
-              "fun trying ",
-            "Fell sleep a the wheel for minute. They dreamed."
+            "Turned on the engine. Stared at the map for a bit"
           ])}`
         );
         transition(value, "Turn on engine");
@@ -102,13 +91,7 @@ export let createShip = ({ color }: ShipOptions) => {
         }
         logJournal(
           ship,
-          `🚀 ${randomFromArray([
-            "Explored the great unknown",
-            "Thought about direction. Wondered why they hadn't before",
-            "Never meant to travel so much. A trucker's life. To have such a " +
-              "lonely spouse",
-            `Put on some tunes. Leaned the seat back. They thought "This is the life"`
-          ])}`
+          `🚀 ${randomFromArray(["Explored the great unknown"])}`
         );
         transition(value, "Fly to random point");
         break;
@@ -120,9 +103,8 @@ export let createShip = ({ color }: ShipOptions) => {
             `${
               ship.visited.length < 1
                 ? "Wondered where all the space stations are around here"
-                : `Has discovered ${ship.visited.length} space stations`
+                : `Has logged ${ship.visited.length} space stations.`
             }`,
-            "Thought about time and space. Freaked out. Pulled over",
             "Pulled over to make sure the glibulator wasn't fumbilating"
           ])}`
         );
