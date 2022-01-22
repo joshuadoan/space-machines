@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createShip, Ship } from "../game/actors/ship/ship";
 import { createSpaceStation, SpaceStation } from "../game/actors/space-station/space-station";
 import { Total } from "../constants";
@@ -29,7 +29,7 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
     setSpaceStations(spaceStationsOnCanvas as SpaceStation[])
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let game: Game = createGame();
     [...Array(Total.SpaceStations)].map(() => {
       let spaceStation = createSpaceStation(game);

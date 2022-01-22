@@ -69,15 +69,14 @@ export function plotTradeRoute(ship: Ship) {
   });
 }
 
-export function filterByRoutes(ship: Ship, filter: string | null) {
-  switch (filter) {
-    case "●":
-      return ship.visited.length >= Total.TradeRouteDelta;
-    case "◐":
-      return ship.visited.length > Total.TradeRouteDelta / 3;
-    default:
-      return true;
+export function sortShips(a: Ship, b: Ship, filter: string | null) {
+  if (filter === "◐" && a.visited.length > b.visited.length) {
+    return -1;
   }
+  if (filter === "⚡" && a.fuel < b.fuel) {
+    return -1;
+  }
+  return 0;
 }
 
 export function hasReachedDestination(ship: Ship) {

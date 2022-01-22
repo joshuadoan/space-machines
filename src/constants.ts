@@ -14,10 +14,10 @@ export let ShipColors = [
 ];
 
 export enum Total {
-  SpaceStations = 42,
+  SpaceStations = 120,
   TradeRouteDelta = Math.floor(Total.SpaceStations * 0.2),
-  Ships = 108,
-  Fuel = 108 * Math.floor(Math.random() * 5)
+  Ships = 32,
+  Fuel = 214
 }
 
 export enum ShipSizes {
