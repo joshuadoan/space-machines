@@ -4,30 +4,37 @@ import { createSpaceStation, SpaceStation } from "../game/actors/space-station/s
 import { FactionColors, Total } from "../constants";
 import { createGame, Game } from "../game/game";
 import { useSearchParams } from "react-router-dom";
-import { addLabel, removeAllLabels, resetCamera, zoomToActor } from "../game-utils";
+import { addLabel, removeAllLabels, resetCamera, SortKeys, sortShips, zoomToActor } from "../game-utils";
 import useWindowSize from "./useWindowSize";
 
 export default function (): [Ship[], Ship | null, SpaceStation[]] {
+  let windowSize = useWindowSize()
   let gameReference = useRef<Game>()
-  let [searchParams] = useSearchParams();
-  let windowSize = useWindowSize();
-
-  let id = searchParams.get("ship");
-
+  let [searchParams] = useSearchParams()
   let [ships, setShips] = useState<Ship[]>([])
   let [spaceStations, setSpaceStations] = useState<SpaceStation[]>([])
-  let selected = id && ships.find(s => s.id === Number(id)) || null;
+
+  let id = searchParams.get("ship")
+  let sort = searchParams.get("sort") as SortKeys;
+  let selected = id && ships.find(s => s.id === Number(id)) || null
 
   function updateState() {
     let game = gameReference.current;
     if (!game) return
 
-    let shipsOnCanvas = game.currentScene.actors.filter(a => a instanceof Ship)
+    let shipsOnCanvas = game.currentScene.actors
+      .filter(a => a instanceof Ship)
+      .sort((a, b) => sortShips(a as Ship, b as Ship, sort))
     setShips(shipsOnCanvas as Ship[])
 
     let spaceStationsOnCanvas = game.currentScene.actors.filter(a => a instanceof SpaceStation)
     setSpaceStations(spaceStationsOnCanvas as SpaceStation[])
   }
+
+  useEffect(() => {
+    let interval = setInterval(updateState, 100);
+    return () => clearInterval(interval);
+  }, [sort])
 
   useEffect(() => {
     let game: Game = createGame();
@@ -47,12 +54,8 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
       })
     })
 
-
     gameReference.current = game;
     game.start();
-
-    let interval = setInterval(updateState, 100);
-    return () => clearInterval(interval);
   }, [windowSize])
 
   useLayoutEffect(() => {
