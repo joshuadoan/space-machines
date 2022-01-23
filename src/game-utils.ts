@@ -122,18 +122,12 @@ export function randomFromArray(arr: any[]) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function itsBeenAFewSeconds(
-  timeStarted?: Date,
-  seconds: number = 10,
-  minimum: number = 5
-) {
+export function itsBeenAFewSeconds(timeStarted?: Date, seconds: number = 10) {
   if (!timeStarted) return false;
-
   let now = new Date().getTime();
   let timeDiff = now - timeStarted.getTime();
-  let random = Math.floor(Math.random() * seconds + minimum);
 
-  return timeDiff > random * 1000;
+  return timeDiff > seconds * 1000;
 }
 
 export type Factions = {

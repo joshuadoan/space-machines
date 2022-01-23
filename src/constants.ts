@@ -21,7 +21,7 @@ export let FactionColors = [
 ];
 
 export enum Total {
-  SpaceStations = 32,
+  SpaceStations = 24,
   TradeRouteDelta = Math.floor(Total.SpaceStations * 0.2),
   Ships = 16,
   Fuel = 214
