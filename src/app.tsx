@@ -15,7 +15,7 @@ export let App = () => {
 
   return (
     <section>
-      <header className="flex items-start md:items-center gap-4 ">
+      <header className="flex items-start md:items-center">
         {
           selected
             ? <Details ship={selected} />
@@ -25,10 +25,8 @@ export let App = () => {
               <Link to={`/?sort=⚡`} aria-selected={sort === "⚡"}>⚡</Link>
             </nav>
         }
-        <section className="opacity-0 md:opacity-100 flex gap-2">
-          🚀 {ships.length} 🪐 {spaceStations.length}
-        </section>
-        <section className="flex gap-4 pl-4">
+        <section className="flex gap-2">
+          <span className="opacity-0 md:opacity-100 ">🚀 {ships.length} 🪐 {spaceStations.length}</span>
           {
             Object.values(factions).map(({ color, goods, name }) => (
               <span
@@ -48,7 +46,7 @@ export let App = () => {
             ))
           }
         </section>
-      </header>
+      </header >
       <main className="flex-col md:flex-row">
         <aside className="md:w-96 h-64 md:h-full">
           {
