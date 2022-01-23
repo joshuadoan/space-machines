@@ -2,14 +2,16 @@ import { Color } from "excalibur";
 import React from "react";
 import Blockies from 'react-blockies';
 
-export default function ({ size, color }: {
+export default function ({ size, color, seed, name }: {
   size?: number;
-  color: Color
+  seed?: string;
+  color: Color;
+  name: string
 }) {
   return (
     <Blockies
       className="blockie"
-      seed={color.toString()}
+      seed={seed || name}
       size={size || 8}
       color={color.toRGBA()} />
   )

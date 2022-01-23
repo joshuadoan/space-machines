@@ -4,52 +4,43 @@ import Details from "./components/Details";
 import Journal from "./components/Journal";
 import GuestList from './components/GuestList'
 import { Link, useSearchParams } from "react-router-dom";
-import { generateName, SortKeys } from "./game-utils";
-import { Color } from "excalibur";
+import { buildFactions, SortKeys } from "./game-utils";
 import Avatar from "./components/Avatar";
 
 export let App = () => {
   let [searchParams] = useSearchParams();
   let [ships, selected, spaceStations] = useGame();
+  let factions = buildFactions(ships)
   let sort = searchParams.get("sort") as SortKeys;
-  let factions: {
-    [key in string]: {
-      name: string,
-      color: Color,
-      goods: number
-    }
-  } = {}
 
-  ships.forEach(ship => {
-    let { lastName } = generateName();
-    factions[ship.color.toString()] = {
-      name: lastName,
-      color: ship.color,
-      goods: factions[ship.color.toString()]
-        ? factions[ship.color.toString()].goods += ship.visited.length
-        : ship.visited.length
-    }
-  })
   return (
     <section>
-      <header className="flex items-center gap-2">
+      <header className="flex items-start md:items-center gap-4 ">
         {
           selected
             ? <Details ship={selected} />
-            : <nav className="flex gap-2">
+            : <nav className="flex flex-1 gap-4">
               <Link to={`/`} aria-selected={!sort} >○</Link>
               <Link to={`/?sort=◐`} aria-selected={sort === "◐"}>◐</Link>
               <Link to={`/?sort=⚡`} aria-selected={sort === "⚡"}>⚡</Link>
             </nav>
         }
-        <span className="flex gap-2 pl-4">🚀 {ships.length} 🪐 {spaceStations.length}</span>
-        <span className="flex gap-2 pl-4">
+        <section className="opacity-0 md:opacity-100 flex gap-2">
+          🚀 {ships.length} 🪐 {spaceStations.length}
+        </section>
+        <section className="flex gap-2 pl-4">
           {
-            Object.values(factions).map(({ name, color, goods }) => (
-              <><Avatar size={6} color={color} /> {goods}</>
+            Object.values(factions).map(({ color, goods, name }) => (
+              <>
+                <Avatar
+                  size={6}
+                  color={color}
+                  seed={color.toString()}
+                  name={name} /> {goods}
+              </>
             ))
           }
-        </span>
+        </section>
       </header>
       <main className="flex-col md:flex-row">
         <aside className="md:w-96 h-64 md:h-full">

@@ -1,4 +1,4 @@
-import { Actor, Font, FontUnit, Label, vec, Vector } from "excalibur";
+import { Actor, Color, Font, FontUnit, Label, vec, Vector } from "excalibur";
 import { nameByRace } from "fantasy-name-generator";
 import { LightsOpacity, ShipSpeed } from "./constants";
 import { Game } from "./game/game";
@@ -129,4 +129,33 @@ export function itsBeenAFewSeconds(timeStarted?: Date) {
   let seconds = Math.floor(Math.random() * 10000);
 
   return timeDiff > seconds * 1000;
+}
+
+export type Factions = {
+  [key in string]: {
+    name: string;
+    color: Color;
+    goods: number;
+    members: Ship[];
+  };
+};
+
+export function buildFactions(ships: Ship[]) {
+  let factions: Factions = {};
+
+  ships.forEach((ship) => {
+    let { lastName } = generateName();
+    let prev = factions[ship.color.toString()];
+    let faction = {
+      ...prev,
+      name: lastName,
+      color: ship.color,
+      members: prev ? [...prev.members, ship] : [],
+      goods: prev ? (prev.goods += ship.visited.length) : ship.visited.length
+    };
+
+    factions[ship.color.toString()] = faction;
+  });
+
+  return factions;
 }
