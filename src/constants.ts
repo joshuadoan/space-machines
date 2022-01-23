@@ -14,10 +14,10 @@ export let ShipColors = [
 ];
 
 export let FactionColors = [
-  Color.Viridian,
-  Color.LightGray,
-  Color.Azure,
-  Color.Magenta
+  Color.Magenta,
+  Color.Chartreuse,
+  Color.Yellow,
+  Color.Azure
 ];
 
 export enum Total {

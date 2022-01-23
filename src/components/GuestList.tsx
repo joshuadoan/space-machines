@@ -1,5 +1,4 @@
 import React from "react";
-import Blockies from 'react-blockies';
 import { Link, useSearchParams } from "react-router-dom";
 import { Ship } from "../game/actors/ship/ship";
 import { Total } from "../constants";
@@ -15,7 +14,7 @@ export default function ({ ships }: { ships: Ship[] }) {
       {ships.length
         ? ships.map((ship, i) => {
           return (
-            <li key={ship.name} className="flex flex-wrap flex-col gap-2">
+            <li key={`${ship.name}-${i}`} className="flex flex-wrap flex-col gap-2">
               <section className="flex gap-x-2  items-center">
                 <Avatar name={ship.name} color={ship.color} size={4} />
                 <Link to={`/?ship=${ship.id}`}>{ship.name}</Link>

@@ -33,7 +33,7 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
   }
 
   useEffect(() => {
-    let interval = setInterval(updateState, 300);
+    let interval = setInterval(updateState, 100);
     return () => clearInterval(interval);
   }, [sort])
 
