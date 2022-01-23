@@ -15,9 +15,9 @@ export default function ({ ships }: { ships: Ship[] }) {
       {ships.length
         ? ships.map((ship, i) => {
           return (
-            <li key={i} className="flex flex-wrap flex-col">
+            <li key={ship.name} className="flex flex-wrap flex-col gap-2">
               <section className="flex gap-x-2  items-center">
-                <Avatar name={ship.name} color={ship.color} />
+                <Avatar name={ship.name} color={ship.color} size={4} />
                 <Link to={`/?ship=${ship.id}`}>{ship.name}</Link>
                 <Tag >{ship.state.value.type}</Tag>
               </section>

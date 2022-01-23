@@ -31,13 +31,20 @@ export let App = () => {
         <section className="flex gap-2 pl-4">
           {
             Object.values(factions).map(({ color, goods, name }) => (
-              <>
+              <span
+                key={name}
+                className="flex gap-2"
+                aria-selected={color.toString() === selected?.color.toString()}
+
+
+              >
                 <Avatar
                   size={6}
                   color={color}
                   seed={color.toString()}
-                  name={name} /> {goods}
-              </>
+                  name={name} />
+                {goods}
+              </span>
             ))
           }
         </section>

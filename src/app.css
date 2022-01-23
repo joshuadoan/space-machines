@@ -86,4 +86,9 @@ nav a:hover {
 .blockie {
   border: 1px solid orange;
   border-radius: 50%;
+  transition: all 0.2s ease-in-out, background-color 1000ms linear;
+}
+
+[aria-selected="true"] .blockie {
+  transform: scale(1.2);
 }

@@ -64,8 +64,6 @@ export let createShip = ({ color }: ShipOptions) => {
     let ship = e.target as Ship;
     let { transition, value } = ship.state;
 
-    if (!itsBeenAFewSeconds(value.at)) return;
-
     if (ship.fuel <= 0) {
       transition(value, "Recharge");
       logJournal(ship, "⚡ Recharging");
@@ -73,6 +71,7 @@ export let createShip = ({ color }: ShipOptions) => {
 
     switch (value.type) {
       case "Off":
+        if (!itsBeenAFewSeconds(value.at)) return;
         logJournal(
           ship,
           `⭐ ${randomFromArray([
@@ -82,9 +81,11 @@ export let createShip = ({ color }: ShipOptions) => {
         transition(value, "Turn on engine");
         break;
       case "Visiting":
+        if (!itsBeenAFewSeconds(value.at)) return;
         transition(value, "Leave");
         break;
       case "Idle":
+        if (!itsBeenAFewSeconds(value.at)) return;
         if (ship.visited.length >= Total.TradeRouteDelta) {
           logJournal(ship, "⭐ Flew a trade route");
           transition(value, "Begin route");
@@ -97,6 +98,8 @@ export let createShip = ({ color }: ShipOptions) => {
         transition(value, "Fly to random point");
         break;
       case "Exploring":
+        if (!itsBeenAFewSeconds(value.at, 30, 10)) return;
+
         logJournal(
           ship,
           `⭐ ${randomFromArray([

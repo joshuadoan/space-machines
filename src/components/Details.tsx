@@ -8,7 +8,7 @@ import Visited from "./Visited";
 
 export default function ({ ship }: { ship: Ship }) {
   return (
-    <>
+    <span className="flex flex-1 gap-2 items-center">
       <Link to="/" className="pr-2">←</Link>
       <Avatar name={ship.name} color={ship.color} />
       {ship.name}
@@ -17,6 +17,6 @@ export default function ({ ship }: { ship: Ship }) {
       <Tag >{ship.state.value.type}</Tag>
       <span>{Math.round(ship.pos.x)}° {Math.round(ship.pos.y)}°</span>
       <span>⚡ {Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
-    </>
+    </span>
   )
 }

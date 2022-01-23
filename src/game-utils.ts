@@ -122,13 +122,18 @@ export function randomFromArray(arr: any[]) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function itsBeenAFewSeconds(timeStarted?: Date) {
+export function itsBeenAFewSeconds(
+  timeStarted?: Date,
+  seconds: number = 10,
+  minimum: number = 5
+) {
   if (!timeStarted) return false;
+
   let now = new Date().getTime();
   let timeDiff = now - timeStarted.getTime();
-  let seconds = Math.floor(Math.random() * 10000);
+  let random = Math.floor(Math.random() * seconds + minimum);
 
-  return timeDiff > seconds * 1000;
+  return timeDiff > random * 1000;
 }
 
 export type Factions = {
@@ -144,11 +149,10 @@ export function buildFactions(ships: Ship[]) {
   let factions: Factions = {};
 
   ships.forEach((ship) => {
-    let { lastName } = generateName();
     let prev = factions[ship.color.toString()];
     let faction = {
       ...prev,
-      name: lastName,
+      name: ship.color.toString(),
       color: ship.color,
       members: prev ? [...prev.members, ship] : [],
       goods: prev ? (prev.goods += ship.visited.length) : ship.visited.length

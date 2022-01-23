@@ -33,7 +33,7 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
   }
 
   useEffect(() => {
-    let interval = setInterval(updateState, 100);
+    let interval = setInterval(updateState, 300);
     return () => clearInterval(interval);
   }, [sort])
 
@@ -50,7 +50,6 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
         let ship = createShip({
           color,
         });
-        ship.color = color;
         game.add(ship);
       })
     })
