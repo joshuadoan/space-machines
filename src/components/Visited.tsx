@@ -6,8 +6,7 @@ export default function ({ ship }: {
   ship: Ship,
 }) {
   return (
-    <span>
-
+    <span className="hidden md:inline-block">
       {[...new Array(Total.TradeRouteDelta)]
         .map((_, i) => i < ship!.visited.length
           ? " ● "

@@ -1,6 +1,6 @@
 import { Actor, Color, Font, FontUnit, Label, vec, Vector } from "excalibur";
 import { nameByRace } from "fantasy-name-generator";
-import { LightsOpacity, ShipSpeed } from "./constants";
+import { FactionColors, LightsOpacity, ShipSpeed } from "./constants";
 import { Game } from "./game/game";
 import { Ship } from "./game/actors/ship/ship";
 
@@ -139,20 +139,18 @@ export type Factions = {
   };
 };
 
-export function buildFactions(ships: Ship[]) {
+export function createFactions() {
   let factions: Factions = {};
 
-  ships.forEach((ship) => {
-    let prev = factions[ship.color.toString()];
-    let faction = {
-      ...prev,
-      name: ship.color.toString(),
-      color: ship.color,
-      members: prev ? [...prev.members, ship] : [],
-      goods: prev ? (prev.goods += ship.visited.length) : ship.visited.length
-    };
+  FactionColors.map((color) => {
+    let { lastName: name } = generateName();
 
-    factions[ship.color.toString()] = faction;
+    factions[name] = {
+      color,
+      name,
+      goods: 0,
+      members: []
+    };
   });
 
   return factions;

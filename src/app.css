@@ -18,13 +18,6 @@ body {
   overflow: hidden;
 }
 
-header {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 1rem 1rem;
-}
-
 main {
   width: 100vw;
   height: calc(100vh - 4rem);

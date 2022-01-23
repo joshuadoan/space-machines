@@ -4,18 +4,17 @@ import Details from "./components/Details";
 import Journal from "./components/Journal";
 import GuestList from './components/GuestList'
 import { Link, useSearchParams } from "react-router-dom";
-import { buildFactions, SortKeys } from "./game-utils";
+import { SortKeys } from "./game-utils";
 import Avatar from "./components/Avatar";
 
 export let App = () => {
   let [searchParams] = useSearchParams();
-  let [ships, selected, spaceStations] = useGame();
-  let factions = buildFactions(ships)
+  let [ships, selected, spaceStations, factions] = useGame();
   let sort = searchParams.get("sort") as SortKeys;
 
   return (
     <section>
-      <header className="flex items-start md:items-center">
+      <header className="flex items-center px-4 py-4">
         {
           selected
             ? <Details ship={selected} />
@@ -25,23 +24,20 @@ export let App = () => {
               <Link to={`/?sort=⚡`} aria-selected={sort === "⚡"}>⚡</Link>
             </nav>
         }
-        <section className="flex gap-2">
-          <span className="opacity-0 md:opacity-100 ">🚀 {ships.length} 🪐 {spaceStations.length}</span>
+        <section className="flex gap-2 items-center">
+          <span className="hidden md:block">🚀 {ships.length} 🪐 {spaceStations.length}</span>
           {
-            Object.values(factions).map(({ color, goods, name }) => (
+            Object.values(factions).map(({ color, name }) => (
               <span
                 key={name}
                 className="flex gap-2"
                 aria-selected={color.toString() === selected?.color.toString()}
-
-
               >
                 <Avatar
                   size={6}
                   color={color}
                   seed={color.toString()}
                   name={name} />
-                {goods}
               </span>
             ))
           }

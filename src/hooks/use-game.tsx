@@ -1,35 +1,50 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createShip, Ship } from "../game/actors/ship/ship";
 import { createSpaceStation, SpaceStation } from "../game/actors/space-station/space-station";
-import { FactionColors, Total } from "../constants";
+import { Total } from "../constants";
 import { createGame, Game } from "../game/game";
 import { useSearchParams } from "react-router-dom";
-import { addLabel, removeAllLabels, resetCamera, SortKeys, sortShips, zoomToActor } from "../game-utils";
+import { addLabel, createFactions, removeAllLabels, resetCamera, SortKeys, sortShips, zoomToActor } from "../game-utils";
 import useWindowSize from "./useWindowSize";
+import { Color } from "excalibur";
 
-export default function (): [Ship[], Ship | null, SpaceStation[]] {
+export type Factions = {
+  [key in string]: {
+    name: string;
+    color: Color;
+    goods: number;
+    members: Ship[];
+  };
+};
+
+export default function (): [Ship[], Ship | null, SpaceStation[], Factions] {
   let windowSize = useWindowSize()
   let gameReference = useRef<Game>()
   let [searchParams] = useSearchParams()
   let [ships, setShips] = useState<Ship[]>([])
+  let [factions] = useState<Factions>(createFactions())
   let [spaceStations, setSpaceStations] = useState<SpaceStation[]>([])
 
   let id = searchParams.get("ship")
   let sort = searchParams.get("sort") as SortKeys;
   let selected = id && ships.find(s => s.id === Number(id)) || null
 
+
   function updateState() {
     let game = gameReference.current;
     if (!game) return
 
     let { actors } = game.currentScene;
-    let shipsOnCanvas = actors
+
+    let ships = actors
       .filter(a => a instanceof Ship)
       .sort((a, b) => sortShips(a as Ship, b as Ship, sort))
-    setShips(shipsOnCanvas as Ship[])
 
-    let spaceStationsOnCanvas = game.currentScene.actors.filter(a => a instanceof SpaceStation)
-    setSpaceStations(spaceStationsOnCanvas as SpaceStation[])
+    let stations = actors
+      .filter(a => a instanceof SpaceStation)
+
+    setShips(ships as Ship[])
+    setSpaceStations(stations as SpaceStation[])
   }
 
   useEffect(() => {
@@ -45,14 +60,14 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
       game.add(spaceStation)
     });
 
-    FactionColors.forEach(color => {
+    for (let name in factions) {
       [...Array(Total.Ships)].forEach(() => {
         let ship = createShip({
-          color,
+          color: factions[name].color
         });
         game.add(ship);
       })
-    })
+    }
 
     gameReference.current = game;
     game.start();
@@ -75,5 +90,5 @@ export default function (): [Ship[], Ship | null, SpaceStation[]] {
     };
   }, [selected])
 
-  return [ships, selected, spaceStations]
+  return [ships, selected, spaceStations, factions]
 }

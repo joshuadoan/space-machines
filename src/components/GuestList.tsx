@@ -20,7 +20,7 @@ export default function ({ ships }: { ships: Ship[] }) {
                 <Link to={`/?ship=${ship.id}`}>{ship.name}</Link>
                 <Tag >{ship.state.value.type}</Tag>
               </section>
-              <section>
+              <section className="flex gap-2  items-center">
                 <span>⚡ {Math.round((100 * ship.fuel) / Total.Fuel)}%</span>
                 <Visited ship={ship} />
               </section>
