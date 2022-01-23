@@ -28,7 +28,7 @@ export let App = () => {
         <section className="opacity-0 md:opacity-100 flex gap-2">
           🚀 {ships.length} 🪐 {spaceStations.length}
         </section>
-        <section className="flex gap-2 pl-4">
+        <section className="flex gap-4 pl-4">
           {
             Object.values(factions).map(({ color, goods, name }) => (
               <span
