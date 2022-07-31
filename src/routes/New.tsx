@@ -19,7 +19,7 @@ type NewGameFormCollection = {
   "game-name": { value: string };
 };
 export let New = () => {
-  const { state: games, update } = useContext(GlobalStateContext);
+  const { state, update } = useContext(GlobalStateContext);
 
   const characterName: string = uniqueNamesGenerator(config);
 
