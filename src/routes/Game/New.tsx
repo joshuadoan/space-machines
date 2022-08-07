@@ -8,7 +8,7 @@ import {
   colors,
   names,
 } from "unique-names-generator";
-import { GlobalStateContext } from "../Providers/GlobalState";
+import { GlobalStateContext } from "../../Providers/GlobalState";
 
 const config: Config = {
   dictionaries: [colors, names],

@@ -6,7 +6,6 @@ import { useState } from "react";
  * storage key so that we can default to that value on page load
  * instead of the specified initial value.
  * */
-
 export default function useLocalStorage<T>(key: string, initialValue: T) {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once

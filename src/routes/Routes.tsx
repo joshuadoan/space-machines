@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Game } from "./Game";
-import { Games } from "./Games";
-import { New } from "./New";
+import { Game } from "./Game/Game";
+import { Games } from "./Game/Games";
+import { New } from "./Game/New";
 import { Nothing } from "./Nothing";
 
 export default () => (

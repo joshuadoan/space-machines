@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { Link, Outlet, useParams, useMatch } from "react-router-dom";
-import { Breadcrumb } from "../components/BreadCrumb";
-import { GlobalStateContext } from "../Providers/GlobalState";
-import { Trash } from "../components/icons";
-import useDate from "../hooks/useDate";
+import { Breadcrumb } from "../../components/BreadCrumb";
+import { GlobalStateContext } from "../../Providers/GlobalState";
+import { Trash } from "../../components/icons";
+import useDate from "../../hooks/useDate";
 
 export let Games = () => {
   let params = useParams();
@@ -24,11 +24,9 @@ export let Games = () => {
               key={id}
               className="flex items-center justify-between hover:underline"
             >
-              <ul className="flex gap-4">
-                <li>{state[id].label}</li>
-                <li> {format(state[id].updatedAt).date}</li>
-                <li> {format(state[id].updatedAt).time}</li>
-              </ul>
+              {state[id].label} {` `}
+              {format(state[id].updatedAt).date} {` `}
+              {format(state[id].updatedAt).time}
               <button
                 onClick={(e) => {
                   e.preventDefault();

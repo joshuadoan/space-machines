@@ -1,13 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import { Nothing } from "./routes/Nothing";
-import "./app.css";
-import { Games } from "./routes/Games";
-import { Game } from "./routes/Game";
-import { New } from "./routes/New";
+import { Games } from "./routes/Game/Games";
+import { Game } from "./routes/Game/Game";
+import { New } from "./routes/Game/New";
 import { GlobalState } from "./Providers/GlobalState";
+import "./app.css";
 
 ReactDOM.render(
   <GlobalState>
