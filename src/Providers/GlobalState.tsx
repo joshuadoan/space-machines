@@ -4,22 +4,22 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 interface GameStateInterface {
   state: GameState;
-  update: (state: GameState) => void;
+  update?: (state: GameState) => void;
+  remove?: (id: string) => void;
 }
 
-const defaultGameStateContext: GameStateInterface = {
+let defaultGameStateContext: GameStateInterface = {
   state: {},
-  update: (state: GameState) => {},
 };
 
-export const GlobalStateContext = createContext<GameStateInterface>(
+export let GlobalStateContext = createContext<GameStateInterface>(
   defaultGameStateContext
 );
 
-export const GlobalState: FC<{
+export let GlobalState: FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [games, setGames] = useLocalStorage("@pepper-games", {
+  let [games, setGames] = useLocalStorage("@pepper-games", {
     games: {},
   });
 
@@ -32,6 +32,11 @@ export const GlobalState: FC<{
             ...prev,
             ...state,
           }));
+        },
+        remove: (id: string) => {
+          let temp = { ...games };
+          delete temp[id];
+          setGames(temp);
         },
       }}
     >

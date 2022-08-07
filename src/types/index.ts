@@ -1,9 +1,11 @@
 export type EntityType = "game";
 export type Game = {
-  type: EntityType;
+  createdAt: number;
   id: string;
+  label: string;
   ships: [];
-  label?: string;
+  type: EntityType;
+  updatedAt: number;
 };
 
 export type GameState = { [id: string]: Game };
